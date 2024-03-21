@@ -1,0 +1,14 @@
+<div class="fixed bottom-4 right-4 bg-black-dark p-4 rounded-md max-h-64 shadow-md overflow-y-auto z-40">
+  <div class="flex justify-end">
+    <app-svg-icon name="close" class="cursor-pointer w-6 h-6 fill-current text-gray-500"
+      (click)="closeDialog()"></app-svg-icon>
+  </div>
+  @for (media of uploadedMediaList; track media; let last = $last) {
+  <div class="flex flex-col mt-1 pb-1" [class.border-b]="!last" [class.border-gray-200]="!last">
+    <div class="flex justify-between items-center">
+      <span class="text-sm font-semibold max-w-xs truncate">{{ media.name }} ({{ media.size | formatBytes }})</span>
+      <span class="text-sm text-gray-500 ml-2">{{ media.progress }}%</span>
+    </div>
+  </div>
+  }
+</div>

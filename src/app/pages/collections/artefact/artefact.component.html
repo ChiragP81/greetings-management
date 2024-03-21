@@ -1,0 +1,233 @@
+@if (artistId) {
+<div class="bg-[white] shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 mb-3">
+  @if (!loadingArtistDetail) {
+  <div class="flex flex-wrap items-center">
+    <div class="w-full flex justify-end mb-6 2xl:mb-8">
+      <app-vc-button *appHasPermission="permissions.UPDATE_ARTIST"
+        [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+        (buttonTap)="editArtist(artistDetail._id)">{{ 'common.edit' | translate }}</app-vc-button>
+    </div>
+    <div class="w-full md:w-2/12">
+      <img [src]="artistDetail?.avatar ? awsUrl+artistDetail?.avatar : '/assets/images/default-user.png'" alt="avatar"
+        class="w-[100px] h-[100px] rounded-full" />
+    </div>
+    <div class="w-full md:w-10/12 pl-4">
+      <p class="font-bold text-lg">
+        {{ artistDetail.salutation }} {{ artistDetail.firstName }} {{ artistDetail.lastName }}
+      </p>
+      <p class="text-sm text-gray-500">{{ artistDetail.displayBio }}</p>
+      <div class="w-full flex flex-wrap justify-between mt-4">
+        <div class="flex flex-col">
+          <span class="text-gray-500">{{ 'artist.nationality' | translate }}</span>
+          <span class="font-semibold">{{ artistDetail.nationality || '-' }}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-gray-500">{{ 'artist.beginDate' | translate }}</span>
+          <span class="font-semibold">{{ (artistDetail.beginDate | date: 'mediumDate') || '-' }}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-gray-500">{{ 'artist.endDate' | translate }}</span>
+          <span class="font-semibold">{{ (artistDetail.endDate | date: 'mediumDate') || '-' }}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-gray-500">{{ 'artist.institution' | translate }}</span>
+          <span class="font-semibold">{{ artistDetail.institution || '-' }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  } @else {
+  <div class="flex items-center justify-center h-20">
+    <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }" />
+  </div>
+  }
+</div>
+}
+<app-vc-search [items]="searchFields" [prefillValue]="prefillValue" (search)="onSearch($event)" [loader]="isLoading" />
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+  <div class="flex flex-wrap justify-end -m-1.5 sm:-m-2 mb-2 sm:mb-3">
+    <div class="p-1.5 sm:p-2 mr-auto order-1 md:order-none flex-auto md:flex-none">
+      <app-vc-button *appHasPermission="permissions.ADD_ARTEFACT"
+        [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5' : true }"
+        (buttonTap)="navigateToAddArtefact()">{{ 'breadcrumbs.add' | translate }}</app-vc-button>
+    </div>
+    <div class="p-1.5 sm:p-2 order-2 md:order-none flex-auto md:flex-none">
+      <ng-select class="w-full font-semibold text-secondary custom-select rounded" [formControl]="sortValue"
+        [clearable]="false" [searchable]="false" (change)="getArtefact()">
+        @for (sort of sortOptions; track sort) {
+        <ng-option [value]="sort.value">
+          {{ 'common.' + sort.label | translate }}
+        </ng-option>
+        }
+      </ng-select>
+    </div>
+    <div class="p-1.5 sm:p-2 order-2 md:order-none flex-auto md:flex-none">
+      <ng-select class="w-full min-w-[124px] font-semibold text-secondary custom-select rounded" [clearable]="false"
+        [searchable]="false" #teams [(ngModel)]="selectedOption" (change)="getArtefact()">
+        @for (item of viewOptions; track item) {
+        <ng-option [value]="item.value">{{ item.label }}</ng-option>
+        }
+      </ng-select>
+    </div>
+    <div class="p-1.5 sm:p-2 order-3 md:order-none w-full xs:w-auto text-right flex-auto md:flex-none">
+      <app-vc-button (buttonTap)="onChangeList(listType.ACTIVE)"
+        [class]="{ 'px-4 h-10 font-semibold font-base rounded-s-5 w-1/2' : true, 'bg-primary text-white' : selectedList === listType.ACTIVE, 'bg-primary-light text-primary' : selectedList !== listType.ACTIVE }">
+        {{ 'options.listType.active' | translate }}
+      </app-vc-button>
+      <app-vc-button (buttonTap)="onChangeList(listType.ARCHIVED)"
+        [class]="{ 'px-4 h-10 font-semibold font-base rounded-e-5 w-1/2' : true, 'bg-primary text-white' : selectedList === listType.ARCHIVED, 'bg-primary-light text-primary' : selectedList !== listType.ARCHIVED }">
+        {{ 'options.listType.archived' | translate }}
+      </app-vc-button>
+    </div>
+    <div class="p-1.5 sm:p-2 order-3 md:order-none w-full xs:w-auto text-right flex-auto md:flex-none">
+      <app-vc-button [class]="{ 'common-btn primary-btn font-base font-semibold rounded-5' : true }"
+        [isDisabled]="exportLoading" [spin]="exportLoading" (buttonTap)="exportData()"> {{ 'artefact.export' |
+        translate }}</app-vc-button>
+    </div>
+  </div>
+  @if (selectedOption === 'list') {
+  <div class="flex flex-col">
+    <app-vc-table tableWidth="[&.generic-table]:min-w-[500px]" name="pageTitle.artefact" [columns]="columns"
+      [data]="artefactList"
+      [dynamicColumnSlots]="{image: imageColumn, action: actionColumn, status: modeColumn, headingName: headingNameColumn, galleryName: galleryNameColumn, isActive: statusColumn}"
+      [isLoading]="isLoading" [totalData]="totalArtefact" (pageChanged)="onPageChanged($event)">
+      <ng-template #imageColumn let-row>
+        <div class="w-14 h-14">
+          <img class="w-full aspect-square object-contain h-100" [src]="row.listUrl" [alt]="row.title">
+        </div>
+      </ng-template>
+      <ng-template #headingNameColumn let-row>
+        {{ row.headingName?.length ? row.headingName : '-' }}
+      </ng-template>
+      <ng-template #galleryNameColumn let-row>
+        {{ row.galleryName?.length ? row.galleryName : '-' }}
+      </ng-template>
+      <ng-template #actionColumn let-row>
+        <app-vc-action-toolbar [actionData]="row.action" [rowReference]="row"></app-vc-action-toolbar>
+      </ng-template>
+      <ng-template #modeColumn let-row>
+        @if(row.status === 'rejected') {
+        <a class="cursor-pointer" (click)="openRejectedReasons(row)" (keypress)="openRejectedReasons(row)" tabindex="0">
+          <span class="px-3 py-0.5 rounded-[8px] text-red bg-red-light">
+            {{ row.status | titlecase }}
+          </span>
+        </a>
+        } @else {
+        <span class="px-3 py-0.5 rounded-[8px]" [ngClass]="{ 'text-green bg-green-light': row.status === 'approved',
+        'text-red bg-red-light': row.status === 'rejected',
+        'text-orange-400 bg-orange-50': row.status === 'pending' }">
+          {{ row.status | titlecase }}
+        </span>
+        }
+      </ng-template>
+      <ng-template #statusColumn let-row>
+        <span class="px-3 py-0.5 rounded-[8px]"
+          [ngClass]="{ 'text-green bg-green-light': row.isActive, 'text-red bg-red-light': !row.isActive }">
+          {{ ('options.status.'+ row.isActive) | translate }}
+        </span>
+      </ng-template>
+    </app-vc-table>
+  </div>
+  }
+  @if (selectedOption !== 'list') {
+  @if(!isLoading) {
+  <div class="grid listing group"
+    [ngClass]="{ 'grid-view' : selectedOption === 'grid', 'detail-view' : selectedOption === 'detail', 'image-view' : selectedOption === 'image' }">
+    @for (item of artefacts; track item) {
+    <div class="list-box relative">
+      <div class="img-box cursor-pointer" (click)="viewArtefact(item)" aria-hidden="true">
+        <img class="w-full aspect-square object-contain h-100" [src]="item.url" [alt]="item.title">
+        @if(selectedOption !== 'detail') {
+        <app-svg-icon [name]="item.status"
+          [ngClass]="{ 'absolute right-0 top-0': true, 'text-red': item.status === 'rejected', 'text-green': item.status === 'approved', 'text-orange-400': item.status === 'pending' }" />
+        }
+      </div>
+      @if(selectedOption !== 'image') {
+      <div class="desc-box">
+        <strong class="title-txt mb-4"> {{ item.title }} </strong>
+        @if (item.description) {
+        <p class="desc-txt line-clamp-2 mb-4"> {{ item.description }}</p>
+        }
+        @if(selectedOption === 'detail') {
+        @if (item.artistName !== '-') {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'pageTitle.artists' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ item.artistName }}</p>
+        </div>
+        }
+        @if (item.categoryName !== '-') {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'pageTitle.categories' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ item.categoryName }}</p>
+        </div>
+        }
+        @if (item.accessionNo !== '-') {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'pageTitle.accessionNo' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ item.accessionNo }}</p>
+        </div>
+        }
+        @if (item.headingName?.length) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'pageTitle.headings' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ item.headingName }}</p>
+        </div>
+        }
+        @if (item.galleryName?.length) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'pageTitle.gallery' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ item.galleryName }}</p>
+        </div>
+        }
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ 'common.status' | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p class="px-3 py-0.5 rounded-[8px]"
+            [ngClass]="{ 'text-green bg-green-light': item.status === 'approved', 'text-red bg-red-light': item.status === 'rejected', 'text-orange-400 bg-orange-50': item.status === 'pending' }">
+            {{ item.status | titlecase }}
+          </p>
+        </div>
+        }
+        @if (item.action?.length) {
+        <div class="action-box">
+          <app-vc-action-toolbar [actionData]="item.action" [rowReference]="item"></app-vc-action-toolbar>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+    @empty {
+    <div class="w-full flex items-center justify-center">
+      {{ 'common.noDataFound' | translate }}
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="flex items-center justify-center h-20">
+    <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }"></app-vc-loader>
+  </div>
+  }
+  <mat-paginator class="generic-table-pagination" [length]="totalArtefact" (page)="onPageChanged($event)"
+    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
+  </mat-paginator>
+  }
+</div>

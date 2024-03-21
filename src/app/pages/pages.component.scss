@@ -1,0 +1,11 @@
+.page-wrapper {
+    width: calc(100% - 280px);
+
+    @media (max-width: 1535px) {
+        width: calc(100% - 240px);
+    }
+
+    @media (max-width: 959px) {
+        width: 100%;
+    }
+}

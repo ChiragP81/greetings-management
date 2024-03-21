@@ -1,0 +1,47 @@
+<ul class="flex flex-wrap mb-4 lg:mb-8 xl:mb-12">
+  @for (breadcrumb of breadcrumbDetail?.breadcrumbs; track breadcrumb; let isLast = $last; let i=$index) {
+  @if (!isLast) {
+  @if(breadcrumbDetail?.showSecondItemCustomLabel && i === 1) {
+  <li>
+    <a class="flex text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-grey-light"
+      [routerLink]="[breadcrumb.url]">
+      {{ breadcrumbDetail.customSecondItemLabel }}
+      <span class="mx-1.5">></span>
+    </a>
+  </li>
+  } @else if(breadcrumbDetail?.showThirdItemCustomLabel && i === 2) {
+  <li>
+    <a class="flex text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-grey-light"
+      [routerLink]="[breadcrumb.url]">
+      {{ breadcrumbDetail.customThirdItemLabel }}
+      <span class="mx-1.5">></span>
+    </a>
+  </li>
+  }
+  @else {
+  <li>
+    <a class="flex text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-grey-light"
+      [routerLink]="[breadcrumb.url]">
+      {{ 'breadcrumbs.' + breadcrumb.label | translate }}
+      <span class="mx-1.5">></span>
+    </a>
+  </li>
+  }
+  }
+  @if (isLast) {
+  @if (!breadcrumbDetail?.showLastItemCustomLabel) {
+  <li>
+    <span class="text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-white">
+      {{ 'breadcrumbs.' + breadcrumb.label | translate }}
+    </span>
+  </li>
+  } @else {
+  <li>
+    <span class="text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-white">
+      {{ breadcrumbDetail.customItemLabel }}
+    </span>
+  </li>
+  }
+  }
+  }
+</ul>

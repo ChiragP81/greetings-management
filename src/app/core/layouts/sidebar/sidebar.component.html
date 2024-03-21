@@ -1,0 +1,61 @@
+<div class="sidebar flex flex-col bg-black fixed w-60 2xl:w-72 top-0 bottom-0" [class.open]="sideMenuOpen">
+  <app-svg-icon name="close" class="close-btn" (click)="toggleSideMenu()" />
+  <div class="mb-auto p-4 2xl:p-6 max-h-[calc(100vh-170px)] overflow-y-auto">
+    <img [src]="logo" class="h-20 mx-auto" alt="{{ 'common.logoAlt' | translate }}">
+    <div class="mt-4 2md:mt-6">
+      <ul>
+        <li routerLinkActive="active">
+          <a class="menu-item py-3.5" [routerLink]="[routes.DASHBOARD]" (click)="toggleSideMenu()">
+            <app-svg-icon name="dashboard" />
+            <span class="ml-4"> {{ 'pageTitle.dashboard' | translate }} </span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="menu-item py-3.5" [routerLink]="[routes.ARTEFACT]" (click)="toggleSideMenu()">
+            <app-svg-icon name="feed" />
+            <span class="ml-4"> {{ 'pageTitle.artefact' | translate }} </span>
+          </a>
+        </li>
+        <li routerLinkActive="active" [ngClass]="{ 'open': menuStates.settings }">
+          <a class="menu-item py-3.5" href="javascript:void(0)" (click)="toggleMenu(menuType.SETTINGS)"
+            (keyup)="toggleMenu(menuType.SETTINGS)" routerLinkActive="active" role="none">
+            <app-svg-icon name="settings" />
+            <span class="ml-4 mr-auto"> {{ 'pageTitle.settings' | translate }} </span>
+            <app-svg-icon [name]="menuStates.settings ? 'arrow_drop_up' : 'arrow_drop_down'" />
+          </a>
+          <ul class="sub-menu">
+            <li *appHasPermission>
+              <a class="menu-item py-3.5" [routerLink]="[routes.MEMBER]" routerLinkActive="active">
+                <app-svg-icon name="group" />
+                <span class="ml-4"> {{ 'pageTitle.members' | translate }} </span>
+              </a>
+            </li>
+            <li *appHasPermission>
+              <a class="menu-item py-3.5" [routerLink]="[routes.ROLES]" routerLinkActive="active">
+                <app-svg-icon name="roles" />
+                <span class="ml-4"> {{ 'pageTitle.roles' | translate }} </span>
+              </a>
+            </li>
+            <li>
+              <a class="menu-item py-3.5" [routerLink]="[routes.CHANGE_PASSWORD]" routerLinkActive="active">
+                <app-svg-icon name="password" />
+                <span class="ml-4"> {{ 'pageTitle.changePassword' | translate }} </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-6 xl:p-8 2xl:px-12 2xl:py-10 mt-auto border-t border-grey-50">
+    <a class="flex menu-item py-3.5" [routerLink]="[routes.PROFILE]">
+      <app-svg-icon name="person" />
+      <span class="ml-3">{{ fullName }}</span>
+    </a>
+    <a class="flex menu-item pb-3.5" [routerLink]="[routes.LOGOUT]">
+      <app-svg-icon name="logout" />
+      <span class="ml-3"> {{ 'pageTitle.logout' | translate }} </span>
+    </a>
+  </div>
+</div>
+<div (click)="toggleSideMenu()" (keypress)="toggleSideMenu()" role="none" class="menu-overlay"></div>

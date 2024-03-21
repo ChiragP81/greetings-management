@@ -1,0 +1,10 @@
+<div class="flex">
+  <app-sidebar></app-sidebar>
+  <div class="page-wrapper p-4 lg:p-6 xl:p-8 2xl:p-10 2md:ml-60 2xl:ml-72">
+    <div class="2md:hidden">
+      <app-header></app-header>
+    </div>
+    <app-breadcrumb [breadcrumbDetail]="breadcrumbDetail$()" />
+    <router-outlet></router-outlet>
+  </div>
+</div>

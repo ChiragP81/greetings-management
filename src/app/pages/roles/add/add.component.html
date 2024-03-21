@@ -1,0 +1,58 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <form [formGroup]="addRoleForm">
+    <div class="flex flex-wrap -m-2">
+      <div class="w-full p-2 md:w-6/12">
+        <div>
+          <label class="field-lbl" for="name"
+            [ngClass]="{ 'field-error' : formControls.name.touched && formControls.name.invalid }">
+            {{ 'common.name' | translate }}
+          </label>
+          <app-vc-input formControlName="name"
+            [customClass]="{ 'form-field' : true, 'field-error' : formControls.name.touched && formControls.name.invalid }"
+            type="text" name="name" />
+        </div>
+      </div>
+    </div>
+    <p class="pt-4 pb-2 font-semibold w-full text-black-light ml-1">{{ 'roles.permissions' | translate }}</p>
+    <div class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      @for (item of permissions$(); track item) {
+      <div class="border rounded-5 p-2">
+        <div class="flex">
+          <input type="checkbox" class="mx-4" [id]="item._id" [value]="item._id" (change)="changePermission($event)"
+            [checked]="selectedPermissions$().includes(item._id)">
+          <label [for]=" item._id" class="text-grey-500 cursor-pointer hover:opacity-70">
+            {{ item.name }}
+          </label>
+        </div>
+      </div>
+      }
+      <!-- <div class="border rounded-5 pb-2"> -->
+      <!-- <div class="flex">
+          <input type="checkbox" class="mx-4" [id]="item._id" [value]="item._id" (change)="changePermission($event)"
+            [checked]="selectedPermissions$().includes(item._id)">
+          <label [for]=" item._id" class="text-grey-500 cursor-pointer hover:opacity-70">
+            {{ item.name }}
+          </label>
+        </div> -->
+      <!-- @for (permission of item.permissions; track permission) {
+        <div class="flex">
+          <input type="checkbox" class="mx-4" [id]="permission._id" [value]="permission._id"
+            (change)="changePermission($event)" [checked]="selectedPermissions$().includes(permission._id)">
+          <label [for]=" permission._id" class="text-grey-500 cursor-pointer hover:opacity-70">
+            {{ permission.description }}
+          </label>
+        </div>
+        } -->
+      <!-- </div> -->
+      <!-- } -->
+    </div>
+    <div class="flex justify-start mt-6 2xl:mt-8">
+      <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+        (buttonTap)="navigateToList()" [isDisabled]="isSubmitted$()">{{ 'common.cancel' | translate }}</app-vc-button>
+      <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+        (buttonTap)="onSubmit()" [isDisabled]="isSubmitted$()" [spin]="isSubmitted$()">
+        {{ (_id ? 'common.update' : 'common.add') | translate }}
+      </app-vc-button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,87 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full max-w-5xl">
+  <form [formGroup]="addMemberForm">
+    <div class="flex flex-wrap -mx-2">
+      <div class="w-full sm:w-6/12 p-2">
+        <div>
+          <label class="field-lbl" for="firstName"
+            [ngClass]="{ 'field-error' : formControls.firstName.touched && formControls.firstName.invalid }">
+            {{ 'member.firstName' | translate }}
+            <span class="text-red">*</span>
+          </label>
+          <app-vc-input formControlName="firstName"
+            [customClass]="{ 'form-field' : true, 'field-error' : formControls.firstName.touched && formControls.firstName.invalid }"
+            type="text" name="firstName" />
+        </div>
+        <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.firstName }" />
+      </div>
+      <div class="w-full sm:w-6/12 p-2">
+        <div>
+          <label class="field-lbl" for="lastName"
+            [ngClass]="{ 'field-error' : formControls.lastName.touched && formControls.lastName.invalid }">
+            {{ 'member.lastName' | translate }}
+            <span class="text-red">*</span>
+          </label>
+          <app-vc-input formControlName="lastName"
+            [customClass]="{ 'form-field' : true, 'field-error' : formControls.lastName.touched && formControls.lastName.invalid }"
+            type="text" name="firstName" />
+        </div>
+        <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.lastName }" />
+      </div>
+      <div class="w-full sm:w-6/12 p-2">
+        <div>
+          <label class="field-lbl" for="email" [ngClass]="{ 'read-only' : true }">
+            {{ 'member.email' | translate }}
+            <span class="text-red">*</span>
+          </label>
+          <app-vc-input [customClass]="{ 'form-field read-only cursor-not-allowed' : true }" autocomplete="off"
+            type="text" name="email" [readOnly]="true" formControlName="email" />
+        </div>
+      </div>
+      <div class="w-full sm:w-6/12 p-2">
+        <div>
+          <label class="field-lbl" for="role" [ngClass]="{ 'read-only' : true }">
+            {{ 'roles.role' | translate}}
+            <span class="text-red">*</span>
+          </label>
+          <input class="form-field read-only cursor-not-allowed" formControlName="role" readonly />
+        </div>
+      </div>
+      <div class="w-full sm:w-6/12 p-2">
+        <div>
+          <label class="field-lbl" for="userName"
+            [ngClass]="{ 'field-error' : formControls.userName.touched && formControls.userName.invalid }">
+            {{ 'member.userName' | translate }}
+            <span class="text-red">*</span>
+          </label>
+          <app-vc-input formControlName="userName"
+            [customClass]="{ 'form-field' : true, 'field-error' : formControls.userName.touched && formControls.userName.invalid }"
+            type="text" name="userName" />
+        </div>
+        <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.userName }" />
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-2 mt-2">
+      <div class="p-2">
+        <div class="flex items-center rounded-md px-4 border border-grey-50 h-10">
+          <label class="text-grey-light font-semibold min-w-[100px]" for="status">
+            {{ 'common.status' | translate }}</label>
+          <span class="px-3 py-0.5 rounded-[8px]"
+            [ngClass]="{ 'text-green bg-green-light' : formControls.isActive.value, 'text-red bg-red-light' : !formControls.isActive.value }">
+            {{ ('options.status.'+ formControls.isActive.value) | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-start mt-6 2xl:mt-8">
+      <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+        (buttonTap)="updateDetail()" [isDisabled]="isSubmitted" [spin]="isSubmitted">
+        {{ 'common.update' | translate }}
+      </app-vc-button>
+    </div>
+  </form>
+</div>
+<ng-template #fieldError let-control="control" let-message="message">
+  @if (control.touched && control.errors?.invalidNumber) {
+  <p class="error-message">{{ 'validation.invalidPhoneNo' | translate }}</p>
+  }
+</ng-template>

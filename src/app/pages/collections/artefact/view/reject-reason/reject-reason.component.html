@@ -1,0 +1,50 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+  <span class="text-lg sm:text-xl lg:text-[22px] xl:text-[25px] font-extrabold text-secondary">
+    {{ data.name }}
+  </span>
+  @if (data.type) {
+  <form [formGroup]="reasonForm" class="mt-4">
+    <div class="flex flex-wrap -m-2">
+      <div class="w-full p-2">
+        <div>
+          <label class="field-lbl" for="Reason" [ngClass]="{
+                'field-error':
+                  formControls.reason.touched && formControls.reason.invalid
+              }">
+            {{ "artefact.reason" | translate }}
+            <span class="text-red">*</span>
+          </label>
+          <textarea class="form-field" rows="3" formControlName="reason" [ngClass]="{
+                'field-error':
+                  formControls.reason.touched && formControls.reason.invalid
+              }">
+            </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center p-2 mt-2">
+      <app-vc-button [class]="{
+            'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4': true
+          }" (buttonTap)="onCancel()">{{ "common.cancel" | translate }}</app-vc-button>
+      <app-vc-button [type]="'submit'" [class]="{
+            'common-btn primary-btn font-semibold rounded-5 min-w-[100px]': true,
+            'pointer-events-none': isSubmitted
+          }" [isDisabled]="isSubmitted" [spin]="isSubmitted" (buttonTap)="onSubmit()">
+        {{ "common.submit" | translate }}
+      </app-vc-button>
+    </div>
+  </form>
+  }
+  <div class="flex flex-col mt-4">
+    <span class="text-lg sm:text-xl lg:text-[18px] xl:text-[18px] font-extrabold text-secondary">
+      {{ "artefact.history" | translate }}:
+    </span>
+    <app-vc-table name="pageTitle.category" [columns]="columns" [data]="rejectedLogList"
+      [dynamicColumnSlots]="{ createdAt: createdAtColumn }" [isLoading]="isLoading" [totalData]="totalData"
+      (pageChanged)="onPageChanged($event)">
+      <ng-template #createdAtColumn let-row>
+        {{ row.createdAt | date: "MMM d, y, h:mm a" }}
+      </ng-template>
+    </app-vc-table>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+@if (!isLoading) {
+@if (tabs[artefact]?.fields.length) {
+<app-vc-dynamic-form [isMetaData]="true" [fields]="tabs[artefact].fields" [formGroup]="tabFormGroups[artefact]"
+  [isCheckbox]="true" [cssClass]="{ 'bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full' : true }" />
+}
+} @else {
+<div class="flex items-center justify-center h-20">
+  <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }" />
+</div>
+}

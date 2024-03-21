@@ -1,0 +1,91 @@
+<form [formGroup]="data.tabFormFieldsGroup" class="bg-black-dark shadow-2sm p-4 rounded-10 w-full">
+  <div class="flex flex-wrap">
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="label" [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.label.touched &&
+          data.tabFormFieldsGroup.controls.label.invalid }">
+          {{ 'artefact.inputTitle' | translate }} <span class="text-red">*</span>
+        </label>
+        <app-vc-input formControlName="label"
+          [customClass]="{ 'form-field w-full' : true, 'field-error' : data.tabFormFieldsGroup.controls.label.touched && data.tabFormFieldsGroup.controls.label.invalid }"
+          type="text" name="label" />
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="type">
+          {{ 'artefact.inputType' | translate }}
+        </label>
+        <ng-select class="w-full font-semibold text-secondary custom-select" id="type" appendTo="body"
+          [items]="availableFieldTypes" bindLabel="label" bindValue="value" formControlName="inputType"
+          [clearable]="false" [searchable]="false" (change)="onChange($event.value)"></ng-select>
+      </div>
+    </div>
+    @if (showOptionsField) {
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="fieldType"
+          [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.options.touched && data.tabFormFieldsGroup.controls.options.invalid }">
+          {{ 'artefact.options' | translate }}<span class="text-red">*</span>
+        </label>
+        <textarea class="form-field" rows="3" cols="50" name="options"
+          placeholder="{{ 'artefact.enterCommaSeparatedValueHere' | translate }}" formControlName="options"
+          [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.options.touched && data.tabFormFieldsGroup.controls.options.invalid }"></textarea>
+      </div>
+    </div>
+    }
+    @if (showCharacterLimitField) {
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="characterLimit" [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.characterLimit.touched &&
+          data.tabFormFieldsGroup.controls.characterLimit.invalid }">
+          {{ 'artefact.characterLimit' | translate }}<span class="text-red">*</span>
+        </label>
+        <app-vc-input formControlName="characterLimit"
+          [customClass]="{ 'form-field w-full' : true, 'field-error' : data.tabFormFieldsGroup.controls.characterLimit.touched && data.tabFormFieldsGroup.controls.characterLimit.invalid }"
+          type="text" name="characterLimit" [applyAllowNumberOnly]="true" [regexType]="regexType.INTEGER" />
+      </div>
+    </div>
+    }
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="placeAfter"
+          [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.sequence.touched && data.tabFormFieldsGroup.controls.sequence.invalid }">
+          {{ 'common.placeAfter' | translate }}<span class="text-red">*</span>
+        </label>
+        <ng-select class="w-full font-semibold text-secondary custom-select" id="placeAfter" appendTo="body"
+          [items]="fieldDetail" bindLabel="displayLabel" bindValue="_id" formControlName="sequence" [clearable]="false"
+          [searchable]="false"
+          [ngClass]="{ 'field-error' : data.tabFormFieldsGroup.controls.sequence.touched && data.tabFormFieldsGroup.controls.sequence.invalid }"></ng-select>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="mandatoryField">
+          {{ 'artefact.mandatory' | translate }}
+        </label>
+        <ng-select class="w-full font-semibold text-secondary custom-select" id="mandatoryField" appendTo="body"
+          [items]="yesNoOptions" bindLabel="label" bindValue="value" formControlName="isRequired" [clearable]="false"
+          [searchable]="false"></ng-select>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div class="flex">
+        <label class="field-lbl min-w-[128px] w-32 md:w-40 md:min-w-[160px]" for="isVisibleToAllField">
+          {{ 'artefact.isVisibleToAll' | translate }}
+        </label>
+        <ng-select class="w-full font-semibold text-secondary custom-select" id="isVisibleToAllField" appendTo="body"
+          [items]="yesNoOptions" bindLabel="label" bindValue="value" formControlName="isVisible" [clearable]="false"
+          [searchable]="false"></ng-select>
+      </div>
+    </div>
+    <div class="w-full flex justify-end p-2 mt-2">
+      <app-vc-button [class]="{'common-btn secondary-btn font-semibold font-base rounded-5 mr-4' : true }"
+        (buttonTap)="closeDialog(false)" [isDisabled]="isLoading">{{ 'common.cancel' | translate }}</app-vc-button>
+      <app-vc-button [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5' : true }"
+        (buttonTap)="save()" [isDisabled]="isLoading" [spin]="isLoading">
+        {{ data.fieldDetail ? ('common.update' | translate) : ('common.add' | translate) }}
+      </app-vc-button>
+    </div>
+  </div>
+</form>

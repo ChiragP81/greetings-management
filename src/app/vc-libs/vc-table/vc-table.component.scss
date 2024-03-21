@@ -1,0 +1,24 @@
+.generic-table {
+  tr {
+    @apply h-12 lg:h-[52px] 2xl:h-[60px] bg-black-dark;
+    &.unread {
+      @apply bg-primary-light;
+    }
+  }
+  th,
+  td {
+    @apply font-base text-sm 2xl:text-base leading-normal overflow-visible py-2;
+    &:first-child {
+      @apply pl-0;
+    }
+    &:last-child {
+      @apply pr-0;
+    }
+  }
+  th {
+    @apply font-bold text-neutral-400 border-white whitespace-nowrap;
+  }
+  td {
+    @apply font-semibold text-white;
+  }
+}

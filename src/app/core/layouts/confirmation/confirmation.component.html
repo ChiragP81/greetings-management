@@ -1,0 +1,12 @@
+<div class="bg-black-dark p-4 lg:p-6 xl:p-8 2xl:p-10">
+  <div class="flex">
+    <div class="w-full p-2 text-center"> {{ data.name | translate }} </div>
+  </div>
+  <div class="flex justify-center p-2 mt-2">
+    <app-vc-button [class]="{ 'common-btn secondary-btn font-base font-semibold rounded-5 mr-4 w-24' : true }"
+      (buttonTap)="onCancel()">{{ 'common.no' | translate }}</app-vc-button>
+    <app-vc-button [class]="{ 'common-btn primary-btn font-base font-semibold rounded-5 h-10 w-24' : true }"
+      (buttonTap)="onConfirm()" [isDisabled]="loaderStatus" [spin]="loaderStatus">{{ 'common.yes' | translate
+      }}</app-vc-button>
+  </div>
+</div>

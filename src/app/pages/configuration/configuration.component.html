@@ -1,0 +1,356 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <form [formGroup]="configurationForm">
+    <mat-accordion multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            General
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to customize the title, email, social links, and disclaimer
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="title"
+                [ngClass]="{ 'field-error': formControls.title.touched && formControls.title.invalid }">
+                {{ 'configuration.title' | translate }}
+              </label>
+              <app-vc-input formControlName="title"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.title.touched && formControls.title.invalid }"
+                type="text" name="title" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.title }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="infoEmail"
+                [ngClass]="{ 'field-error': formControls.infoEmail.touched && formControls.infoEmail.invalid }">
+                {{ 'configuration.infoEmail' | translate }}
+              </label>
+              <app-vc-input formControlName="infoEmail"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.infoEmail.touched && formControls.infoEmail.invalid }"
+                type="email" name="infoEmail" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.infoEmail }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="facebook"
+                [ngClass]="{ 'field-error': formControls.facebook.touched && formControls.facebook.invalid }">
+                {{ 'configuration.facebookLink' | translate }}
+              </label>
+              <app-vc-input [customClass]="{  }" formControlName="facebook"
+                [customClass]="{ 'form-field h-full' : true,'field-error' : formControls.facebook.touched && formControls.facebook.invalid  }"
+                type="text" name="facebook" />
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.facebook, socialMedia: 'facebook' }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="twitter"
+                [ngClass]="{ 'field-error': formControls.twitter.touched && formControls.twitter.invalid }">
+                {{ 'configuration.twitterLink' | translate }}
+              </label>
+              <app-vc-input formControlName="twitter"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.twitter.touched && formControls.twitter.invalid  }"
+                type="text" name="twitter" />
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.twitter, socialMedia: 'twitter' }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="instagram"
+                [ngClass]="{ 'field-error': formControls.instagram.touched && formControls.instagram.invalid }">
+                {{ 'configuration.instagramLink' | translate }}
+              </label>
+              <app-vc-input formControlName="instagram"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.instagram.touched && formControls.instagram.invalid  }"
+                type="text" name="instagram" />
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.instagram, socialMedia: 'instagram' }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="youtube"
+                [ngClass]="{ 'field-error': formControls.youtube.touched && formControls.youtube.invalid }">
+                {{ 'configuration.youtubeLink' | translate }}
+              </label>
+              <app-vc-input formControlName="youtube"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.youtube.touched && formControls.youtube.invalid  }"
+                type="text" name="youtube" />
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.youtube, socialMedia: 'youtube' }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="linkedin"
+                [ngClass]="{ 'field-error': formControls.linkedin.touched && formControls.linkedin.invalid }">
+                {{ 'configuration.linkedinLink' | translate }}
+              </label>
+              <app-vc-input formControlName="linkedin"
+                [customClass]="{ 'form-field h-full' : true,'field-error' : formControls.linkedin.touched && formControls.linkedin.invalid  }"
+                type="text" name="linkedin" />
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.linkedin, socialMedia: 'linkedin' }" />
+          </div>
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="disclaimer"
+                [ngClass]="{ 'field-error': formControls.disclaimer.touched && formControls.disclaimer.invalid }">
+                {{ 'configuration.disclaimer' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="disclaimer" formControlName="disclaimer"
+                [ngClass]="{ 'field-error' : formControls.disclaimer.touched && formControls.disclaimer.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.disclaimer }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Collection
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to customize text on collection page
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="searchArtefacts"
+                [ngClass]="{ 'field-error': formControls.searchArtefacts.touched && formControls.searchArtefacts.invalid }">
+                {{ 'configuration.searchArtefacts' | translate }}
+              </label>
+              <app-vc-input formControlName="searchArtefacts"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.searchArtefacts.touched && formControls.searchArtefacts.invalid }"
+                type="text" name="searchArtefacts" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.searchArtefacts }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="headingTitle"
+                [ngClass]="{ 'field-error': formControls.headingTitle.touched && formControls.headingTitle.invalid }">
+                {{ 'configuration.headingTitle' | translate }}
+              </label>
+              <app-vc-input formControlName="headingTitle"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.headingTitle.touched && formControls.headingTitle.invalid }"
+                type="text" name="headingTitle" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.headingTitle }" />
+          </div>
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="galleryTitle"
+                [ngClass]="{ 'field-error': formControls.galleryTitle.touched && formControls.galleryTitle.invalid }">
+                {{ 'configuration.galleryTitle' | translate }}
+              </label>
+              <app-vc-input formControlName="galleryTitle"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.galleryTitle.touched && formControls.galleryTitle.invalid }"
+                type="text" name="galleryTitle" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.galleryTitle }" />
+          </div>
+
+          <div class="w-full p-2 sm:w-6/12">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="categoryTitle"
+                [ngClass]="{ 'field-error': formControls.categoryTitle.touched && formControls.categoryTitle.invalid }">
+                {{ 'configuration.categoryTitle' | translate }}
+              </label>
+              <app-vc-input formControlName="categoryTitle"
+                [customClass]="{ 'form-field h-full' : true, 'field-error' : formControls.categoryTitle.touched && formControls.categoryTitle.invalid }"
+                type="text" name="categoryTitle" />
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.categoryTitle }" />
+          </div>
+
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="headingDescription"
+                [ngClass]="{ 'field-error': formControls.headingDescription.touched && formControls.headingDescription.invalid }">
+                {{ 'configuration.headingDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="headingDescription" formControlName="headingDescription"
+                [ngClass]="{ 'field-error' : formControls.headingDescription.touched && formControls.headingDescription.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.headingDescription }" />
+          </div>
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="galleryDescription"
+                [ngClass]="{ 'field-error': formControls.galleryDescription.touched && formControls.galleryDescription.invalid }">
+                {{ 'configuration.galleryDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="galleryDescription" formControlName="galleryDescription"
+                [ngClass]="{ 'field-error' : formControls.galleryDescription.touched && formControls.galleryDescription.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.galleryDescription }" />
+          </div>
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="categoryDescription"
+                [ngClass]="{ 'field-error': formControls.categoryDescription.touched && formControls.categoryDescription.invalid }">
+                {{ 'configuration.categoryDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="categoryDescription" formControlName="categoryDescription"
+                [ngClass]="{ 'field-error' : formControls.categoryDescription.touched && formControls.categoryDescription.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.categoryDescription }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Gallery
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to customize text on gallery page
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="galleryPageDescription"
+                [ngClass]="{ 'field-error': formControls.galleryPageDescription.touched && formControls.galleryPageDescription.invalid }">
+                {{ 'configuration.galleryPageDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="galleryPageDescription"
+                formControlName="galleryPageDescription"
+                [ngClass]="{ 'field-error' : formControls.galleryPageDescription.touched && formControls.galleryPageDescription.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.galleryPageDescription }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            History & Education
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to customize text on history & education page
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="historyAndEducationPageDescription"
+                [ngClass]="{ 'field-error': formControls.historyAndEducationPageDescription.touched && formControls.historyAndEducationPageDescription.invalid }">
+                {{ 'configuration.historyAndEducationPageDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="historyAndEducationPageDescription"
+                formControlName="historyAndEducationPageDescription"
+                [ngClass]="{ 'field-error' : formControls.historyAndEducationPageDescription.touched && formControls.historyAndEducationPageDescription.invalid }"></textarea>
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.historyAndEducationPageDescription }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Exhibition
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to customize text on exhibition page
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="exhibitionPageDescription"
+                [ngClass]="{ 'field-error': formControls.exhibitionPageDescription.touched && formControls.exhibitionPageDescription.invalid }">
+                {{ 'configuration.exhibitionPageDescription' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="exhibitionPageDescription"
+                formControlName="exhibitionPageDescription"
+                [ngClass]="{ 'field-error' : formControls.exhibitionPageDescription.touched && formControls.exhibitionPageDescription.invalid }"></textarea>
+            </div>
+            <ng-container
+              *ngTemplateOutlet="fieldError; context: { control: formControls.exhibitionPageDescription }" />
+          </div>
+          <div class="w-full p-2">
+            <div>
+              <label class="field-lbl min-w-[144px]" for="feedback"
+                [ngClass]="{ 'field-error': formControls.feedback.touched && formControls.feedback.invalid }">
+                {{ 'configuration.feedback' | translate }}
+              </label>
+              <textarea class="form-field" rows="3" name="feedback" formControlName="feedback"
+                [ngClass]="{ 'field-error' : formControls.feedback.touched && formControls.feedback.invalid }"></textarea>
+            </div>
+            <ng-container *ngTemplateOutlet="fieldError; context: { control: formControls.feedback }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Logo Image
+          </mat-panel-title>
+          <mat-panel-description>
+            This is used to change the logo
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex flex-wrap">
+          <div class="w-full p-2">
+            <ng-container *ngTemplateOutlet="uploadImage; context: { $implicit: 'logo' }" />
+          </div>
+          <div class="w-full p-2">
+            <ng-container *ngTemplateOutlet="uploadImage; context: { $implicit: 'homeThumbnail' }" />
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="flex justify-start mt-6 2xl:mt-8">
+      <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+        (buttonTap)="onSubmit()" [isDisabled]="isSubmitted" [spin]="isSubmitted">
+        {{ 'common.update' | translate }}
+      </app-vc-button>
+    </div>
+  </form>
+</div>
+
+<ng-template #uploadImage let-fieldName>
+  <div class="flex flex-col rounded-md border p-4"
+    [ngClass]="{'field-error' : formControls[fieldName].touched && formControls[fieldName].invalid }">
+    <label class="text-black-light pb-4 leading-5 font-semibold relative" [for]="fieldName"
+      [ngClass]="{ 'field-error' : formControls[fieldName].touched && formControls[fieldName].invalid }">
+      {{ 'configuration.'+fieldName | translate }}
+      @if (formControls[fieldName].value) {
+      <app-vc-button [class]="{ 'text-red absolute right-0' : true }" (buttonTap)="removeImage(fieldName)">
+        <app-svg-icon name="delete" />
+      </app-vc-button>
+      }
+    </label>
+    <label
+      class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-64">
+      @if (formControls[fieldName].value) {
+      <img class="max-h-full" [src]="formControls[fieldName].value.url" [alt]="fieldName">
+      } @else {
+      <app-svg-icon name="upload" class="text-grey-light" />
+      <span class="ml-3 text-grey-light">{{ 'gallery.uploadImage' | translate }}</span>
+      }
+      <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        (change)="onFileChange($event, fieldName)" [accept]="imageType" />
+    </label>
+    <i class="text-grey-light text-xs">{{ 'common.fileHint' | translate: { extension, size, ratio } }}</i>
+  </div>
+</ng-template>
+
+<ng-template #fieldError let-control="control" let-socialMedia="socialMedia">
+  @if (control.touched && control.errors?.pattern) {
+  <p class="error-message">{{ socialMedia ? ('validation.invalidLink' | translate: { socialMedia }) :
+    ('validation.invalidEmail' | translate ) }}</p>
+  }
+</ng-template>

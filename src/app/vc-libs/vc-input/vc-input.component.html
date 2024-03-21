@@ -1,0 +1,4 @@
+<ng-content select="[matIcon]"></ng-content>
+<input #input [(ngModel)]='control' [appAllowNumberOnly]="applyAllowNumberOnly" [attr.max]="maxLength"
+  [attr.name]="name" [regexType]="regexType" [attr.type]="type" [ngClass]="customClass" [placeholder]="placeholder"
+  (blur)="touched($event)" [readOnly]="readOnly" />

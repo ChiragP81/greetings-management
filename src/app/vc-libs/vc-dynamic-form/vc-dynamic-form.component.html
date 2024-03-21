@@ -1,0 +1,118 @@
+@if(!isLoading) {
+<form [formGroup]="formGroup" class="dynamic-form" [ngClass]="cssClass">
+  <div class="flex flex-wrap -m-2" cdkDropList [cdkDropListData]="_fields" (cdkDropListDropped)="drop($event)">
+    @for (field of _fields; let i = $index; track i) {
+    <div class="w-full p-2"
+      [ngClass]="{ 'sm:w-6/12' : !fromMetadata && field.type !== fieldType.TextArea && field.type !== fieldType.Editor && field.type !== fieldType.File }"
+      cdkDrag [cdkDragDisabled]="cdkDragDisabled">
+      <div class="bg-gray-50 border-dotted border-2 min-h-[40px] w-full transition p-2 rounded"
+        [ngClass]="{ 'h-80' : field.type === fieldType.Editor, 'h-16' : field.type === fieldType.TextArea }"
+        *cdkDragPlaceholder></div>
+      <div>
+        <label class="field-lbl" [for]="field.name" [ngClass]="{ 'field-error' : formGroup.controls[field.name].touched &&
+            formGroup.controls[field.name].invalid, 'cursor-move': !cdkDragDisabled }">
+          {{ field.label }}
+          @if (field.mandatory || field.checked) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          @switch(field.type) {
+          @case (fieldType.Text) {
+          <app-vc-input
+            [customClass]="{ 'form-field h-full' : true, 'field-error' : formGroup.controls[field.name].touched && formGroup.controls[field.name].invalid }"
+            [formControlName]="field.name" [name]="field.name" />
+          }
+          @case (fieldType.TextArea) {
+          <textarea class="form-field" rows="3" [formControlName]="field.name" [ngClass]="{ 'field-error' : formGroup.controls[field.name].touched &&
+              formGroup.controls[field.name].invalid }"></textarea>
+          }
+          @case (fieldType.File) {
+          <div class="flex flex-col w-full rounded-md border p-4"
+            [ngClass]="{'field-error' : formGroup.controls[field.name].touched && formGroup.controls[field.name].invalid}">
+            <label
+              class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-64">
+              @if (!formGroup.controls[field.name].value) {
+              <app-svg-icon name="upload" class="text-grey-light" />
+              <span class="ml-3 text-grey-light">
+                {{ 'common.uploadFile' | translate: { type: field.label } }}
+              </span>
+              } @else () {
+              <img class="max-h-full" [src]="formGroup.controls[field.name].value.url"
+                [alt]="formGroup.controls[field.name].value.url">
+              }
+              <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file"
+                (change)="onFileChange($event, field.name)">
+            </label>
+          </div>
+          }
+          @case (fieldType.Select) {
+          <ng-select class="w-full font-semibold text-secondary custom-select" id="mandatoryField" appendTo="body"
+            [items]="field.optionDetail" bindLabel="label" bindValue="value" [formControlName]="field.name"
+            [clearable]="false" [searchable]="false"
+            [ngClass]="{'field-error' : formGroup.controls[field.name].touched && formGroup.controls[field.name].invalid}"></ng-select>
+          }@case (fieldType.Radio) {
+          <mat-radio-group [formControlName]="field.name" class="form-field" [ngClass]="{ 'field-error' : formGroup.controls[field.name].touched
+                && formGroup.controls[field.name].invalid }">
+            @for (option of field.optionDetail; track option) {
+            <mat-radio-button [value]="option.value">
+              {{ option.label }}
+            </mat-radio-button>
+            }
+          </mat-radio-group>
+          }
+          @case (fieldType.Date) {
+          <div class="flex justify-between items-center form-field"
+            [ngClass]="{ 'field-error' : formGroup.controls[field.name].touched && formGroup.controls[field.name].invalid }">
+            <input matInput readonly [matDatepicker]="picker" [max]="today" class="w-full outline-none"
+              [formControlName]="field.name" (focus)="picker.open()"
+              (dateChange)="onDateChange($event, formGroup.controls[field.name])">
+            <mat-datepicker-toggle class="btn-date-select" matIcon [for]="picker">
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-datepicker-toggle>
+          </div>
+          }
+          @case (fieldType.Editor) {
+          <div class="form-field"
+            [ngClass]="{ 'field-error' : formGroup.controls[field.name].touched && formGroup.controls[field.name].invalid }">
+            <ngx-editor-menu [editor]="editor.get(field.name)" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor class="form-field-editor" [editor]="editor.get(field.name)" [formControlName]="field.name">
+            </ngx-editor>
+          </div>
+          }
+          }
+          @if (showAction && field.labelType !== labelType.PREDEFINED) {
+          <app-vc-button type="button" (buttonTap)="editField.emit(i)" [class]="{ 'self-start text-red' : true }">
+            <app-svg-icon name="edit" />
+          </app-vc-button>
+          <app-vc-button type="button" (buttonTap)="removeField(i)" [class]="{ 'self-start text-red' : true }">
+            <app-svg-icon name="delete" />
+          </app-vc-button>
+          }
+          @if (isCheckbox) {
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" [formControlName]="field.name" color="primary"
+              (change)="!field.mandatory && onCheckboxChange($event, field)"></mat-checkbox>
+          </div>
+          }
+        </div>
+      </div>
+      <ng-container *ngTemplateOutlet="fieldError; context: { control: formGroup.controls[field.name]}">
+      </ng-container>
+    </div>
+    }
+  </div>
+</form>
+} @else {
+<div class="flex items-center justify-center h-20">
+  <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }"></app-vc-loader>
+</div>
+}
+<ng-template #fieldError let-control="control">
+  @if(control.touched && control.errors?.maxlength) {
+  <p class="error-message">
+    {{ 'validation.characterLimitExceed' | translate: { length: control.errors?.maxlength.requiredLength } }}
+  </p>
+  }
+</ng-template>

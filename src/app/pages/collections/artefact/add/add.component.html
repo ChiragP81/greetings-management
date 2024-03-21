@@ -1,0 +1,53 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="currentTabIndex" color="primary"
+  backgroundColor="primary" (selectedTabChange)="tabChanged($event)">
+  @for (tab of tabs; track tab; let tabIndex= $index) {
+  <mat-tab [disabled]="!_id && areTabsDisabled && tabIndex !== artefactTabs.GENERAL" [label]="tab.label">
+    <ng-template matTabContent>
+      @if (tabIndex === artefactTabs.GENERAL) {
+      <app-general-form [formGroup]="tabFormGroups[tabIndex]" [id]="artefactId" />
+      }@else if (tabIndex === artefactTabs.PREVIEW_MEDIA) {
+      <app-media-form [isDownload]="artefactDetail?.data.isDownload" [id]="artefactId" />
+      } @else if (tabIndex === artefactTabs.VIDEOS) {
+      <app-video-form [id]="artefactId" />
+      }@else if (tabIndex === artefactTabs.PHOTOS) {
+      <app-image-form [id]="artefactId" />
+      }@else if (tabIndex === artefactTabs.DOCUMENTS) {
+      <app-document-form [id]="artefactId" />
+      }@else if (tabIndex === artefactTabs.AUDIOS) {
+      <app-audio-form [id]="artefactId" />
+      }@else if (tabIndex === artefactTabs.METADATA) {
+      <app-metadata-form [id]="artefactId" />
+      }
+      @if ([artefactTabs.GENERAL, artefactTabs.METADATA].includes(tabIndex)) {
+      <div class="flex justify-start mt-6 2xl:mt-8">
+        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+          (buttonTap)="navigateToList()" [isDisabled]="!isTabSwitch && (isSubmitted || isSubmittedClose)">
+          {{ 'common.cancel' | translate }}
+        </app-vc-button>
+        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+          (buttonTap)="save()" [isDisabled]="!isTabSwitch && (isSubmitted || isSubmittedClose)"
+          [spin]="!isTabSwitch && isSubmitted">
+          {{ 'common.submit' | translate }}
+        </app-vc-button>
+        <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+          (buttonTap)="save(true)" [isDisabled]="!isTabSwitch && (isSubmitted || isSubmittedClose)"
+          [spin]="!isTabSwitch && isSubmittedClose">
+          {{ 'common.submitAndClose' | translate }}
+        </app-vc-button>
+      </div>
+      } @else {
+      <div class="flex justify-between mt-6 2xl:mt-8">
+        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+          (buttonTap)="switchTab(tabIndex-1)">
+          {{ 'common.previous' | translate }}
+        </app-vc-button>
+        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+          (buttonTap)="switchTab(tabIndex+1)">
+          {{ 'common.next' | translate }}
+        </app-vc-button>
+      </div>
+      }
+    </ng-template>
+  </mat-tab>
+  }
+</mat-tab-group>

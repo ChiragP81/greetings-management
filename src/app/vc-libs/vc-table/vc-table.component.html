@@ -1,0 +1,37 @@
+<div class="overflow-x-auto">
+  <table class="generic-table w-full {{tableWidth}}" mat-table [dataSource]="data"
+    attr.aria-describedby="{{ name | translate }}" cdkDropList (cdkDropListDropped)="drop($event)">
+    <!-- Render dynamic columns using ngFor -->
+    @for (column of columns; track column) {
+    <ng-container [matColumnDef]="column.key">
+      <th mat-header-cell *matHeaderCellDef [style]="{width: column.width}">{{ column.label | translate }}</th>
+      <td mat-cell *matCellDef="let row">
+        @if (!isColumnDynamicSlot(column.key)) {
+        {{ row[column.key] }}
+        } @else {
+        <ng-container *ngTemplateOutlet="dynamicColumnSlots[column.key]; context: { $implicit: row }">
+        </ng-container>
+        }
+      </td>
+    </ng-container>
+    }
+    <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnKeys;"
+      [ngClass]="{ 'unread': unReadFeature && !row.isRead, 'cursor-move': !cdkDragDisabled && data.data.length > 1 }"
+      cdkDrag [cdkDragDisabled]="cdkDragDisabled"></tr>
+  </table>
+  @if (!isLoading && !data.data.length) {
+  <div class="flex items-center font-medium justify-center h-20">
+    {{ 'common.noDataFound' | translate }}
+  </div>
+  }
+  @if (isLoading) {
+  <div class="flex items-center justify-center h-20">
+    <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }"></app-vc-loader>
+  </div>
+  }
+</div>
+@if (requiredPagination) {
+<mat-paginator class="generic-table-pagination" (page)="emitPage($event)" [pageSizeOptions]="pageSizeOptions"
+  [length]="totalData" showFirstLastButtons></mat-paginator>
+}

@@ -1,0 +1,277 @@
+@if(selectedSection.length) {
+<div class="w-full p-1" [formGroup]="parentFormGroup">
+  <div cdkDropList [cdkDropListData]="selectedSection" (cdkDropListDropped)="drop($event)">
+    @for(item of selectedSection;track item.id; let i=$index) {
+    <div cdkDrag class="flex items-center justify-between mt-1 w-full cursor-move">
+      <p class="p-1">{{'Section-'+(i+1)}}</p>
+      <app-vc-button [class]="{ 'bg-red text-white rounded-md p-2' : true }" (buttonTap)="removeSection(i)">
+        <app-svg-icon name="delete" />
+      </app-vc-button>
+    </div>
+    @switch(item.key) {
+    @case(sectionType.TEXT) {
+    <div class="p-1">
+      <div class="w-full p-2 bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error': dynamicFormControls[item.key + item.id].touched && dynamicFormControls[item.key + item.id].invalid }">
+        <label class="field-lbl min-w-[144px] w-36" for="text"
+          [ngClass]="{'field-error':dynamicFormControls[item.key + item.id].touched && dynamicFormControls[item.key + item.id].invalid }">
+          {{ item.key | titlecase }} <span class="text-red">*</span>
+        </label>
+        <ngx-editor-menu [editor]="textEditor[item.id]" [toolbar]="toolbar">
+        </ngx-editor-menu>
+        <ngx-editor class="form-field-editor" [editor]="textEditor[item.id]" [formControlName]="'text'+ item.id">
+        </ngx-editor>
+      </div>
+    </div>
+    }
+    @case (sectionType.IMAGE) {
+    <div class="p-1">
+      <div class="p-2 bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error' : dynamicFormControls['image'+item.id].touched && dynamicFormControls['image'+item.id].invalid }">
+        <div class="flex-col rounded-md mt-1">
+          <label class="text-black-light pb-2 leading-5 font-semibold relative flex" for="image"
+            [ngClass]="{ 'field-error' : dynamicFormControls['image' + item.id].touched && dynamicFormControls['image'+ item.id].invalid }">
+            {{item.key | titlecase }}<span class="text-red">*</span>
+            @if(dynamicFormControls['image'+item.id].value) {
+            <app-vc-button [class]="{ 'text-red absolute right-0' : true }"
+              (buttonTap)="removeImageOrVideo(item.id,'image')">
+              <app-svg-icon name="delete" />
+            </app-vc-button>
+            }
+          </label>
+          <label
+            class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-32">
+            @if(!dynamicFormControls['image' + item.id].value) {
+            <app-svg-icon name="upload" class="text-grey-light" />
+            <span class="ml-3 text-grey-light">{{ 'gallery.uploadImage' | translate }}</span>
+            }@else if(isMedia(dynamicFormControls['image' + item.id].value)) {
+            <img class="max-h-full" [src]="dynamicFormControls['image'+item.id].value.url"
+              [alt]="dynamicFormControls['image' + item.id].value">
+            }
+            <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [accept]="imageType"
+              (change)="onFileChange($event, 'image', item.id, 'image')" />
+          </label>
+          <i class="text-grey-light text-xs">{{ 'common.fileHint' | translate: { extension, size, ratio: image }
+            }}</i>
+        </div>
+      </div>
+    </div>
+    }
+    @case(sectionType.VIDEO) {
+    <div class="p-1">
+      <div class="p-2 bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error' : dynamicFormControls['previewImage' + item.id].touched && dynamicFormControls['previewImage' + item.id].invalid }">
+        <div class="flex-col rounded-md mt-1">
+          <label class="text-black-light pb-2 leading-5 font-semibold relative flex" for="image"
+            [ngClass]="{ 'field-error' : dynamicFormControls['previewImage' + item.id].touched && dynamicFormControls['previewImage' + item.id].invalid }">
+            {{ 'gallery.previewImage' | translate }}<span class="text-red">*</span>
+            @if(dynamicFormControls['previewImage' + item.id].value){
+            <app-vc-button [class]="{ 'text-red absolute right-0' : true }"
+              (buttonTap)="removeImageOrVideo(item.id,'previewImage')">
+              <app-svg-icon name="delete" />
+            </app-vc-button>
+            }
+          </label>
+          <label
+            class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-32">
+            @if (!dynamicFormControls['previewImage' + item.id].value) {
+            <app-svg-icon name="upload" class="text-grey-light" />
+            <span class="ml-3 text-grey-light">{{ 'gallery.uploadImage' | translate }}</span>
+            } @else if (isMedia(dynamicFormControls['previewImage' + item.id].value)) {
+            <img class="max-h-full" [src]="dynamicFormControls['previewImage' + item.id].value.url"
+              [alt]="dynamicFormControls['previewImage' + item.id].value">
+            }
+            <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [accept]="imageType"
+              (change)="onFileChange($event, 'image', item.id, 'previewImage')" />
+          </label>
+          <i class="text-grey-light text-xs">
+            {{ 'common.fileHint' | translate: { extension, size, ratio: video } }}</i>
+        </div>
+        <label class="field-lbl min-w-[144px] w-36" for="text"
+          [ngClass]="{ 'field-error': dynamicFormControls['video' + item.id].touched && dynamicFormControls['video' + item.id].invalid }">
+          {{ item.key | titlecase }} <span class="text-red">*</span>
+        </label>
+        <input class="form-field py-1 bg-black-dark" type="file" (change)="onFileChange($event, 'video', item.id)"
+          [accept]="supportedFileTypes" [ngClass]="{ 'field-error': dynamicFormControls['video' + item.id].touched
+        && dynamicFormControls['video' + item.id].invalid }">
+        <i class="text-grey-light text-xs">{{ 'common.fileHintWithoutRatio' | translate: {
+          extension: videoExtension, size: videoSize } }}</i>
+
+        @if (dynamicFormControls['video' + item.id].value?.url) {
+        <div class="flex items-center justify-between mt-1 w-full p-3 bg-black-dark shadow-md rounded-lg">
+          <div class="flex items-center">
+            <div class="bg-primary rounded-full p-2">
+              <app-svg-icon name="video_upload" class="text-white" />
+            </div>
+            <p class="ml-4 cursor-pointer text-primary"
+              (click)="previewVideo(dynamicFormControls['video' + item.id].value)"
+              (keypress)="previewVideo(dynamicFormControls['video' + item.id].value)" role="none">
+              {{ dynamicFormControls['video' + item.id].value.url | extractFileName }}
+            </p>
+          </div>
+          <div>
+            <app-vc-button [class]="{ 'bg-red text-white rounded-md p-2' : true }"
+              (buttonTap)="removeImageOrVideo(item.id, 'video')">
+              <app-svg-icon name="delete" />
+            </app-vc-button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    @case(sectionType.BANNER) {
+    <div class="p-1">
+      <div class="p-3 bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error' : ((dynamicFormControls['bannerTitle' + item.id].touched && dynamicFormControls['bannerTitle' + item.id].invalid) || (dynamicFormControls['subTitle' + item.id].touched && dynamicFormControls['subTitle' + item.id].invalid) || (dynamicFormControls['banner' + item.id].touched && dynamicFormControls['banner' + item.id].invalid)) }">
+        <label class="field-lbl min-w-[144px] w-36" for="title"
+          [ngClass]="{ 'field-error' : dynamicFormControls['bannerTitle' + item.id].touched && dynamicFormControls['bannerTitle' + item.id].invalid }">
+          {{ 'common.title' | translate }} <span class="text-red">*</span>
+        </label>
+        <app-vc-input [formControlName]="'bannerTitle'+ item.id"
+          [customClass]="{ 'form-field h-full' : true, 'field-error' : dynamicFormControls['bannerTitle' + item.id].touched && dynamicFormControls['bannerTitle' + item.id].invalid }"
+          type="text" name="title" />
+        <label class="field-lbl min-w-[144px] w-36" for="subTitle"
+          [ngClass]="{ 'field-error' : dynamicFormControls['subTitle' + item.id].touched && dynamicFormControls['subTitle' + item.id].invalid }">
+          {{ 'article.subTitle' | translate }} <span class="text-red">*</span>
+        </label>
+        <app-vc-input [formControlName]="'subTitle' + item.id"
+          [customClass]="{ 'form-field h-full' : true, 'field-error' : dynamicFormControls['subTitle' + item.id].touched && dynamicFormControls['subTitle' + item.id].invalid }"
+          type="text" name="subTitle" />
+        <div class="flex-col rounded-md mt-1">
+          <label class="text-black-light pb-2 leading-5 font-semibold relative flex" for="image"
+            [ngClass]="{ 'field-error' : dynamicFormControls['banner' + item.id].touched && dynamicFormControls['banner' + item.id].invalid }">
+            {{'article.bannerImage' | translate }}<span class="text-red">*</span>
+            @if (dynamicFormControls['banner' + item.id].value) {
+            <app-vc-button [class]="{ 'text-red absolute right-0' : true }"
+              (buttonTap)="removeImageOrVideo(item.id,'banner')">
+              <app-svg-icon name="delete" />
+            </app-vc-button>
+            }
+          </label>
+          <label
+            class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-32">
+            @if(!dynamicFormControls['banner' + item.id].value) {
+            <app-svg-icon name="upload" class="text-grey-light" />
+            <span class="ml-3 text-grey-light">{{ 'gallery.uploadImage' | translate }}</span>
+            }@else if(isMedia(dynamicFormControls['banner' + item.id].value)){
+            <img class="max-h-full" [src]="dynamicFormControls['banner' + item.id].value.url"
+              [alt]="dynamicFormControls['banner' + item.id].value">
+            }
+            <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [accept]="imageType"
+              (change)="onFileChange($event, 'image', item.id, 'banner')" />
+          </label>
+          <i class="text-grey-light text-xs">{{ 'common.fileHintWithoutRatio' | translate: { extension, size }
+            }}</i>
+        </div>
+      </div>
+    </div>
+    }
+    @case(sectionType.TEXT_WITH_IMAGE) {
+    <div class="p-1">
+      <div class="flex flex-wrap bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error' : dynamicFormControls['itImage' + item.id].touched && dynamicFormControls['itImage' + item.id].invalid } ">
+        <div class="p-2 w-full">
+          <label class="field-lbl min-w-[144px] w-36" for="imagePosition">
+            {{ 'article.imagePosition' | translate }} <span class="text-red">*</span>
+          </label>
+          <mat-radio-group class="flex gap-4" [formControlName]="'imagePosition' + item.id">
+            @for (option of imagePositions; track $index) {
+            <mat-radio-button [value]="option.value">
+              {{ option.label }}
+            </mat-radio-button>
+            }
+          </mat-radio-group>
+        </div>
+        <div class="flex-col p-2 w-1/2 rounded-md" [ngClass]="{ 'field-error' : dynamicFormControls['itImage' + item.id].touched && dynamicFormControls['itImage' + item.id].invalid,
+      'order-1': dynamicFormControls['imagePosition' + item.id].value === 'right' }">
+          <label class="field-lbl flex justify-between" for="image"
+            [ngClass]="{ 'field-error' : dynamicFormControls['itImage' + item.id].touched && dynamicFormControls['itImage' + item.id].invalid }">
+            {{'article.image' | translate }}<span class="text-red mr-auto">*</span>
+            @if (dynamicFormControls['itImage' + item.id].value) {
+            <app-vc-button [class]="{ 'text-red w-5' : true }" (buttonTap)="removeImageOrVideo(item.id,'itImage')">
+              <app-svg-icon name="delete" />
+            </app-vc-button>
+            }
+          </label>
+          <label class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer
+          h-[22rem] h-md-[22rem]">
+            @if(!dynamicFormControls['itImage' + item.id].value) {
+            <app-svg-icon name="upload" class="text-grey-light" />
+            <span class="ml-3 text-grey-light">{{ 'gallery.uploadImage' | translate }}</span>
+            }@else if (isMedia(dynamicFormControls['itImage' + item.id].value)) {
+            <img class="max-h-full" [src]="dynamicFormControls['itImage' + item.id].value.url"
+              [alt]="dynamicFormControls['itImage' + item.id].value">
+            }
+            <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [accept]="imageType"
+              (change)="onFileChange($event, 'image', item.id, 'itImage')" />
+          </label>
+          <i class="text-grey-light text-xs">{{ 'common.fileHint' | translate: { extension, size, ratio: textWithImage }
+            }}</i>
+        </div>
+        <div class="p-2 w-1/2 flex flex-col">
+          <label class="field-lbl" for="text"
+            [ngClass]="{ 'field-error' : dynamicFormControls['itText' + item.id].touched && dynamicFormControls['itText' + item.id].invalid }">
+            {{ 'article.text' | translate }} <span class="text-red">*</span>
+          </label>
+          <ngx-editor-menu [editor]="editor[item.id]" [toolbar]="toolbar">
+          </ngx-editor-menu>
+          <ngx-editor class="form-field-editor" [editor]="editor[item.id]" [formControlName]="'itText' + item.id">
+          </ngx-editor>
+        </div>
+      </div>
+    </div>
+    }
+    @case (sectionType.ARTEFACT) {
+    <div class="p-1">
+      <div class="w-full p-2 bg-gray-50 rounded border"
+        [ngClass]="{ 'field-error' : dynamicFormControls['artefact' + item.id].touched && dynamicFormControls['artefact' + item.id].invalid }">
+        <label class="field-lbl min-w-[144px] w-36" for="artefact"
+          [ngClass]="{ 'field-error' : dynamicFormControls['artefact' + item.id].touched && dynamicFormControls['artefact' + item.id].invalid }">
+          {{ 'article.artefact' | translate }} <span class="text-red">*</span>
+        </label>
+        <ng-select class="w-full font-semibold text-secondary custom-select" id="artist" [items]="artefactList"
+          bindLabel="title" bindValue="_id" placeholder="Search Artefact" appendTo="body" [multiple]="true"
+          [formControlName]="'artefact'+ item.id"
+          [ngClass]="{ 'field-error' : dynamicFormControls['artefact' + item.id].touched && dynamicFormControls['artefact' + item.id].invalid }">
+          <ng-template ng-option-tmp let-artefact="item">
+            <div class="flex items-center">
+              <img [src]="artefact.url" [alt]="artefact.title" class="w-8 h-8 rounded-5">
+              <div class="ml-4 w-11/12">
+                <h2 class="text-lg font-semibold text-ellipsis overflow-hidden whitespace-nowrap">{{ artefact.title }}
+                </h2>
+                <p class="text-gray-500 line-clamp-2">{{ artefact.accessionNo }}</p>
+                @if (artefact.description) {
+                <p class="text-gray-500 text-ellipsis overflow-hidden whitespace-nowrap ">{{ artefact.description
+                  }}</p>
+                }
+              </div>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+    }
+    }
+    }
+  </div>
+</div>
+}
+<div class="w-full flex">
+  <div class="w-2/3 p-2">
+    <label class="field-lbl" for="section" [ngClass]="{ 'field-error' : sectionCtrl.touched && sectionCtrl.invalid }">
+      {{ 'article.section' | translate }}</label>
+    <ng-select class="w-full min-w-[150px] font-semibold text-secondary custom-select rounded" appendTo="body"
+      [formControl]="sectionCtrl" [clearable]="false" [searchable]="false" placeholder="Select Section">
+      @for (section of sectionList; track $index) {
+      <ng-option [value]="section.value">
+        {{ section.label | translate }}
+      </ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="w-1/3 p-2 flex items-end">
+    <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+      (buttonTap)="addSection()">{{ 'common.add' | translate }}</app-vc-button>
+  </div>
+</div>

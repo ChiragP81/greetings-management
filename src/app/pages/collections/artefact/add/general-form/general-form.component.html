@@ -1,0 +1,420 @@
+@if (!isLoading) {
+<form [formGroup]="formGroup" class="bg-black-dark shadow-2sm p-2  rounded-10 w-full">
+  <i class="text-primary text-xs font-bold">*{{ 'artefact.websiteInformation' | translate }}</i>
+  <div class="flex flex-wrap mb-4 md:p-4 lg:p-6 xl:p-8 2xl:p-10">
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="Title"
+          [ngClass]="{ 'field-error': formGroup.controls.title.touched && formGroup.controls.title.invalid }">
+          {{ 'common.name' | translate }}<span class="text-red">*</span>
+        </label>
+        <app-vc-input [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.title.touched &&
+        formGroup.controls.title.invalid }" name="title" formControlName="title" />
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="accessionNo" [ngClass]="{ 'field-error': formGroup.controls.accessionNo.touched &&
+          formGroup.controls.accessionNo.invalid, 'read-only': id }"> {{ 'artefact.accessionNo' | translate }}<span
+            class="text-red">*</span></label>
+        <app-vc-input
+          [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.accessionNo.touched && formGroup.controls.accessionNo.invalid, 'read-only': id }"
+          name="accessionNo" formControlName="accessionNo" [readOnly]="!!id" />
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="originYear"
+          [ngClass]="{ 'field-error': formGroup.controls.originYear.touched && formGroup.controls.originYear.invalid }">{{
+          'artefact.originYear' | translate }}
+          @if(previewFields.controls.originYear.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <app-vc-input
+            [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.originYear.touched && formGroup.controls.originYear.invalid }"
+            name="originYear" formControlName="originYear" />
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="originYear" color="primary"
+              (change)="onCheckboxChange($event, 'originYear')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="placeOfOrigin"
+          [ngClass]="{ 'field-error': formGroup.controls.placeOfOrigin.touched && formGroup.controls.placeOfOrigin.invalid }">
+          {{ 'artefact.placeOfOrigin' | translate }}
+          @if(previewFields.controls.placeOfOrigin.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <app-vc-input
+            [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.placeOfOrigin.touched && formGroup.controls.placeOfOrigin.invalid }"
+            name="placeOfOrigin" formControlName="placeOfOrigin" />
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="placeOfOrigin" color="primary"
+              (change)="onCheckboxChange($event, 'placeOfOrigin')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="medium"
+          [ngClass]="{ 'field-error': formGroup.controls.medium.touched && formGroup.controls.medium.invalid }">{{
+          'artefact.medium' | translate }}
+          @if(previewFields.controls.medium.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex items-center">
+          <textarea class="form-field" rows="3" name="medium" formControlName="medium"
+            [ngClass]="{ 'field-error' : formGroup.controls.medium.touched && formGroup.controls.medium.invalid }"></textarea>
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="medium" color="primary"
+              (change)="onCheckboxChange($event, 'medium')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="categoryId"
+          [ngClass]="{ 'field-error': formGroup.controls.categoryId.touched && formGroup.controls.categoryId.invalid }">
+          {{ 'artefact.category' | translate }}<span class="text-red">*</span></label>
+        <div class="flex">
+          <ng-select class="w-full font-semibold text-secondary custom-select" id="category" [items]="categoryList"
+            bindLabel="label" bindValue="value" [clearable]="false" [searchable]="false"
+            [placeholder]="'common.select' | translate" formControlName="categoryId"
+            [ngClass]="{ 'field-error': formGroup.controls.categoryId.touched && formGroup.controls.categoryId.invalid }">
+          </ng-select>
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="categoryId" color="primary"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="dimensions"
+          [ngClass]="{ 'field-error': formGroup.controls.dimensions.touched && formGroup.controls.dimensions.invalid }">
+          {{ 'artefact.dimensions' | translate }}
+          @if(previewFields.controls.dimensions.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <app-vc-input
+            [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.dimensions.touched && formGroup.controls.dimensions.invalid }"
+            name="dimensions" formControlName="dimensions" />
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="dimensions" color="primary"
+              (change)="onCheckboxChange($event, 'dimensions')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div class="align-middle">
+        <label class="field-lbl" for="artist"
+          [ngClass]="{ 'field-error': formGroup.controls.artistId.touched && formGroup.controls.artistId.invalid }">
+          {{ 'artefact.artist' | translate }}
+          @if(previewFields.controls.artistId.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <ng-select class="w-full font-semibold text-secondary custom-select" id="artist" [items]="artistList"
+            bindLabel="label" bindValue="value" [placeholder]="'artefact.searchArtist' | translate"
+            formControlName="artistId"
+            [ngClass]="{ 'field-error' : formGroup.controls.artistId.touched && formGroup.controls.artistId.invalid }">
+          </ng-select>
+          <!-- <app-vc-button (buttonTap)="addArtist()" [class]="{ 'flex ml-1 bg-primary text-white rounded-5 p-2': true }">
+            <app-svg-icon name="add" />
+          </app-vc-button> -->
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="artistId" color="primary"
+              (change)="onCheckboxChange($event, 'artistId')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="credit"
+          [ngClass]="{ 'field-error': formGroup.controls.credit.touched && formGroup.controls.credit.invalid }">{{
+          'artefact.credit' | translate }}
+          @if(previewFields.controls.credit.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <app-vc-input
+            [customClass]="{ 'form-field h-full': true, 'field-error': formGroup.controls.credit.touched && formGroup.controls.credit.invalid }"
+            name="credit" formControlName="credit" />
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="credit" color="primary"
+              (change)="onCheckboxChange($event, 'credit')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="Description"
+          [ngClass]="{ 'field-error': formGroup.controls.description.touched && formGroup.controls.description.invalid }">
+          {{ 'common.description' | translate }}
+          @if(previewFields.controls.description.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex items-center">
+          <textarea class="form-field" rows="3" name="description" formControlName="description"
+            [ngClass]="{ 'field-error' : formGroup.controls.description.touched && formGroup.controls.description.invalid }"></textarea>
+          <div formGroupName="previewFields">
+            <mat-checkbox class="ml-2" formControlName="description" color="primary"
+              (change)="onCheckboxChange($event, 'description')"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="headingId"
+          [ngClass]="{ 'field-error': formGroup.controls.headingId.touched && formGroup.controls.headingId.invalid }">{{
+          'artefact.collectionHeadings' | translate }}
+          @if(previewFields.controls.headingId.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex">
+          <ng-select class="w-full font-semibold text-secondary custom-select" id="headingId" [items]="headingList"
+            bindLabel="label" bindValue="value" [clearable]="false" [searchable]="true"
+            [placeholder]="'common.select' | translate" formControlName="headingId" [multiple]="true"
+            [ngClass]="{ 'field-error' : formGroup.controls.headingId.touched && formGroup.controls.headingId.invalid }">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div>
+        <label class="field-lbl" for="Keyword"
+          [ngClass]="{ 'field-error': formGroup.controls.keyword.touched && formGroup.controls.keyword.invalid }">
+          {{ 'artefact.keyword' | translate }}
+          @if(previewFields.controls.keyword.value) {
+          <span class="text-red">*</span>
+          }
+        </label>
+        <div class="flex items-center">
+          <ng-select class="w-full font-semibold text-secondary hide-arrow" [addTag]="true" [multiple]="true"
+            [selectOnTab]="true" [isOpen]="false" formControlName="keyword" [editableSearchTerm]="true"
+            (blur)="setKeywords($event)">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <p class="field-lbl" formGroupName="previewFields" [ngClass]="{ 'field-error': auctionHistoryArray.invalid }">{{
+        'auction.history' | translate }}
+      </p>
+      <div class="mt-2 overflow-x-auto overflow-y-hidden">
+        <table class="generic-table w-full" aria-describedby="Auction History">
+          <tr class="text-left">
+            <th class="min-w-[140px]">{{ 'auction.house' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.location' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'common.notes' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.dateOfPurchase' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'insurance.currency' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.purchasePrice' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.tax' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.transportCost' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'auction.totalCost' | translate }}</th>
+            <th class="sticky right-0 bg-black-dark"></th>
+          </tr>
+          <ng-container formArrayName="auctionHistory">
+            @for (auction of auctionHistoryArray.controls; track auction; let i = $index; let isLast = $last) {
+            <tr [formGroupName]="i">
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('auctionHouse').touched && auction.get('auctionHouse').invalid }"
+                  name="auctionHouse" [formControl]="getFormControl(auction.get('auctionHouse'))" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('location').touched && auction.get('location').invalid }"
+                  name="location" [formControl]="getFormControl(auction.get('location'))" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('notes').touched && auction.get('notes').invalid }"
+                  name="notes" [formControl]="getFormControl(auction.get('notes'))" />
+              </td>
+              <td>
+                <div class="flex justify-between items-center form-field min-w-[140px]"
+                  [ngClass]="{ 'field-error': auction.get('dateOfPurchase').touched && auction.get('dateOfPurchase').invalid }">
+                  <input matInput [matDatepicker]="datePicker" readonly class="w-full outline-none text-xs"
+                    name="dateOfPurchase" placeholder="Select Date"
+                    [formControl]="getFormControl(auction.get('dateOfPurchase'))" (focus)="datePicker.open()"
+                    (dateChange)="onDateChange($event, getFormControl(auction.get('dateOfPurchase')))">
+                  <mat-datepicker-toggle class="btn-date-select" matIcon [for]="datePicker">
+                    <mat-datepicker #datePicker>
+                      <mat-datepicker-actions>
+                        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold font-base rounded-5' : true }"
+                          (buttonTap)="onClearDate(datePicker, getFormControl(auction.get('dateOfPurchase')))">{{
+                          'common.clear' | translate
+                          }}</app-vc-button>
+                        <app-vc-button matDatepickerApply
+                          [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5 ml-2' : true }">{{
+                          'common.apply' |
+                          translate }}</app-vc-button>
+                      </mat-datepicker-actions>
+                    </mat-datepicker>
+                  </mat-datepicker-toggle>
+                </div>
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('currency').touched && auction.get('currency').invalid }"
+                  name="currency" [formControl]="getFormControl(auction.get('currency'))" placeholder="USD" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('purchasePrice').touched && auction.get('purchasePrice').invalid }"
+                  name="purchasePrice" [formControl]="getFormControl(auction.get('purchasePrice'))" placeholder="0"
+                  min="0" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('tax').touched && auction.get('tax').invalid }"
+                  name="tax" [formControl]="getFormControl(auction.get('tax'))" placeholder="0" min="0" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('transportCost').touched && auction.get('transportCost').invalid }"
+                  name="transportCost" [formControl]="getFormControl(auction.get('transportCost'))" placeholder="0"
+                  min="0" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': auction.get('totalCost').touched && auction.get('totalCost').invalid }"
+                  name="totalCost" [formControl]="getFormControl(auction.get('totalCost'))" placeholder="0" min="0" />
+              </td>
+              <td class="sticky right-0 bg-black-dark">
+                <div class="flex">
+                  @if (isLast) {
+                  <app-vc-button (buttonTap)="addAuction()"
+                    [class]="{ 'ml-1 bg-primary text-white rounded-5 p-2': true }">
+                    <app-svg-icon name="add" />
+                  </app-vc-button>
+                  } @else {
+                  <app-vc-button (buttonTap)="delete(i, history.AUCTION)"
+                    [class]="{ 'ml-1 bg-red text-white rounded-5 p-2': true }">
+                    <app-svg-icon name="delete" />
+                  </app-vc-button>
+                  }
+                </div>
+              </td>
+            </tr>
+            }
+          </ng-container>
+        </table>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <p class="field-lbl" formGroupName="previewFields" [ngClass]="{ 'field-error': insuranceHistoryArray.invalid }">{{
+        'insurance.history' | translate }}
+      </p>
+      <div class="mt-2 overflow-x-auto overflow-y-hidden">
+        <table class="generic-table w-full" aria-describedby="Insurance History">
+          <tr class="text-left">
+            <th class="min-w-[140px]">{{ 'insurance.insurance' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'insurance.currency' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'insurance.value' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'insurance.date' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'insurance.valuedBy' | translate }}</th>
+            <th class="min-w-[140px]">{{ 'common.notes' | translate }}</th>
+            <th class="sticky right-0 bg-black-dark"></th>
+          </tr>
+          <ng-container formArrayName="insuranceHistory">
+            @for (insurance of insuranceHistoryArray.controls; track insurance; let i = $index; let isLast = $last) {
+            <tr [formGroupName]="i">
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': insurance.get('insurance').touched && insurance.get('insurance').invalid }"
+                  name="insurance" [formControl]="getFormControl(insurance.get('insurance'))" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': insurance.get('currency').touched && insurance.get('currency').invalid }"
+                  name="currency" [formControl]="getFormControl(insurance.get('currency'))" placeholder="USD" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': insurance.get('value').touched && insurance.get('value').invalid }"
+                  name="value" [formControl]="getFormControl(insurance.get('value'))" placeholder="0" min="0" />
+              </td>
+              <td>
+                <div class="flex justify-between items-center form-field min-w-[140px]"
+                  [ngClass]="{ 'field-error': insurance.get('date').touched && insurance.get('date').invalid }">
+                  <input matInput [matDatepicker]="datePicker" readonly class="w-full outline-none text-xs" name="date"
+                    placeholder="Select Date" [formControl]="getFormControl(insurance.get('date'))"
+                    (focus)="datePicker.open()"
+                    (dateChange)="onDateChange($event, getFormControl(insurance.get('date')))">
+                  <mat-datepicker-toggle class="btn-date-select" matIcon [for]="datePicker">
+                    <mat-datepicker #datePicker>
+                      <mat-datepicker-actions>
+                        <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold font-base rounded-5' : true }"
+                          (buttonTap)="onClearDate(datePicker, getFormControl(insurance.get('date')))">{{
+                          'common.clear' | translate
+                          }}</app-vc-button>
+                        <app-vc-button matDatepickerApply
+                          [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5 ml-2' : true }">{{
+                          'common.apply' |
+                          translate }}</app-vc-button>
+                      </mat-datepicker-actions>
+                    </mat-datepicker>
+                  </mat-datepicker-toggle>
+                </div>
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': insurance.get('valuedBy').touched && insurance.get('valuedBy').invalid }"
+                  name="valuedBy" [formControl]="getFormControl(insurance.get('valuedBy'))" placeholder="0" min="0" />
+              </td>
+              <td>
+                <app-vc-input
+                  [customClass]="{ 'form-field min-w-[140px]': true, 'field-error': insurance.get('notes').touched && insurance.get('notes').invalid }"
+                  name="notes" [formControl]="getFormControl(insurance.get('notes'))" />
+              </td>
+              <td class="sticky right-0 bg-black-dark">
+                <div class="flex">
+                  @if (isLast) {
+                  <app-vc-button (buttonTap)="addInsurance()"
+                    [class]="{ 'ml-1 bg-primary text-white rounded-5 p-2': true }">
+                    <app-svg-icon name="add" />
+                  </app-vc-button>
+                  } @else {
+                  <app-vc-button (buttonTap)="delete(i, history.INSURANCE)"
+                    [class]="{ 'ml-1 bg-red text-white rounded-5 p-2': true }">
+                    <app-svg-icon name="delete" />
+                  </app-vc-button>
+                  }
+                </div>
+              </td>
+            </tr>
+            }
+          </ng-container>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>
+} @else {
+<div class="flex items-center justify-center h-20">
+  <app-vc-loader [class]="{ 'w-8 h-8 border-x-primary border-y-transparent' : true }" />
+</div>
+}

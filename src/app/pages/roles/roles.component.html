@@ -1,0 +1,39 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+  <div class="flex flex-wrap -m-1.5 sm:-m-2 mb-2 sm:mb-3">
+    <div class="p-1.5 sm:p-2 mr-auto order-1 sm:order-none flex-auto sm:flex-none">
+      <app-vc-button [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5' : true }"
+        (buttonTap)="navigateToAddRole()">{{ 'breadcrumbs.add' | translate }}</app-vc-button>
+    </div>
+    <div class="p-1.5 sm:p-2 order-3 sm:order-none flex-auto sm:flex-none">
+      <div class="search-box relative sm:min-w-[300px]">
+        <app-vc-input placeholder="{{ 'common.name' | translate }}"
+          [customClass]="{ 'shadow-2sm rounded-[60px] outline-0 text-blue-50 font-semibold h-10 w-full pr-4 pl-11' : true }"
+          type="text" name="search" [formControl]="searchControl">
+          <app-svg-icon name="search" matIcon class="text-blue-50 absolute top-2.5 left-2.5" />
+        </app-vc-input>
+      </div>
+    </div>
+    <div class="p-1.5 sm:p-2 order-2 sm:order-none flex-auto sm:flex-none">
+      <ng-select class="w-full font-semibold text-secondary custom-select rounded" [formControl]="sortValue"
+        [clearable]="false" [searchable]="false" (change)="getRoles()">
+        @for (sort of sortOptions; track sort) {
+        <ng-option [value]="sort.value">
+          {{ 'common.' + sort.label | translate }}
+        </ng-option>
+        }
+      </ng-select>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <app-vc-table name="pageTitle.roles" [columns]="columns$()" [data]="rolesList"
+      [dynamicColumnSlots]="{action: actionColumn, createdAt: createdAtColumn}" [totalData]="totalData$()"
+      [isLoading]="isLoading$()" (pageChanged)="onPageChanged($event)">
+      <ng-template #actionColumn let-row>
+        <app-vc-action-toolbar [actionData]="row.action" [rowReference]="row"></app-vc-action-toolbar>
+      </ng-template>
+      <ng-template #createdAtColumn let-row>
+        {{ row.createdAt | date: 'mediumDate' }}
+      </ng-template>
+    </app-vc-table>
+  </div>
+</div>

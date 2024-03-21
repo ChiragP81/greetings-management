@@ -1,0 +1,9 @@
+<div>
+  <div class="flex justify-end p-2">
+    <app-svg-icon name="close" class="cursor-pointer w-6 h-6 fill-current text-gray-500"
+      (click)="closeDialog()"></app-svg-icon>
+  </div>
+  <div>
+    <app-vc-three-d-model [modelURL]="dialogData.url"></app-vc-three-d-model>
+  </div>
+</div>

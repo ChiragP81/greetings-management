@@ -1,0 +1,220 @@
+<div class="-m-2 xl:-m-3 2xl:-m-4">
+  @if (dashboardCounts$()) {
+  <div class="flex flex-wrap">
+    <div [routerLink]="routes.MEMBER"
+      class="cursor-pointer p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalMember' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-blue-600 mt-3">
+            {{ dashboardCounts$().member.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().member.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().member.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div [routerLink]="routes.ARTEFACT"
+      class="cursor-pointer p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalArtefacts' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-red mt-3">
+            {{ dashboardCounts$().artefact.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Approved: {{ dashboardCounts$().artefact.approved }}</p>
+            <p>Rejected: {{ dashboardCounts$().artefact.rejected }}</p>
+            <p>Pending: {{ dashboardCounts$().artefact.pending }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalExhibition' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-green mt-3">
+            {{ dashboardCounts$().exhibition.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().exhibition.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().exhibition.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalHeading' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-yellow-600 mt-3">
+            {{ dashboardCounts$().heading.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().heading.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().heading.active }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalDonation' | translate }}
+          </p>
+          <p
+            class="text-[16px] xl:text-[16px] 2xl:text-[24px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-orange-600 mt-3">
+            @if (dashboardCounts$().donation && dashboardCounts$().donation.total) {
+            {{ dashboardCounts$().donation.total | moneyFormat }}
+            }
+            @else {
+            N/A
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalArtist' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-grey-500 mt-3">
+            {{ dashboardCounts$().artist.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().artist.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().artist.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalGalleries' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-purple-500 mt-3">
+            {{ dashboardCounts$().gallery.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().gallery.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().gallery.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalCategory' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-teal-500 mt-3">
+            {{ dashboardCounts$().category.total }}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{ dashboardCounts$().category.inActive }}</p>
+            <p>Active: {{ dashboardCounts$().category.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalUser' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-blue-600 mt-3">
+            {{dashboardCounts$().user.total}}
+          </p>
+        </div>
+        <div class="text-xs mt-6">
+          <div class="w-full">
+            <p>Inactive: {{dashboardCounts$().user.inActive }}</p>
+            <p>Active: {{dashboardCounts$().user.active }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+      <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+        <div>
+          <p class="text-[15px] xl:text-base 2xl:text-xm font-semibold text-white">
+            {{ 'dashboard.totalRoles' | translate }}
+          </p>
+          <p
+            class="text-3xl xl:text-[34px] 2xl:text-[28px] leading-[34px] xl:leading-[38px] 2xl:leading-[44px] font-bold text-blue-600 mt-3">
+            {{dashboardCounts$().role.total}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  @if (isLoading$()) {
+  <div class="-m-2 xl:-m-3 2xl:-m-4 animate-pulse">
+    <div class="flex flex-wrap">
+      @for(item of skeletonItems(10); track item;){
+      <div class="p-2 xl:p-3 2xl:p-4 flex w-full xs:w-6/12 lg:w-3/12 xl:w-1/5 text-center">
+        <div class="bg-black-dark shadow-2sm w-full p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+          <div>
+            <p class="text-[15px] h-4 bg-neutral-600 rounded-3xl">
+            </p>
+            <div class="flex justify-center items-center">
+              <p class="text-3xl h-8 bg-neutral-600 w-1/4 rounded-3xl mt-5"></p>
+            </div>
+          </div>
+          <div class="text-xs mt-5">
+            <div class="w-full">
+              <div class="h-4 bg-neutral-600 rounded-3xl mb-2"></div>
+              <div class="h-4 bg-neutral-600 rounded-3xl mb-2"></div>
+              <div class="h-4 bg-neutral-600 rounded-3xl"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

@@ -1,0 +1,42 @@
+import { environment } from '@environment/environment';
+
+export const API = {
+  ARTEFACT: `${environment.collectionApi}/api/artefact`,
+  ARTIST: `${environment.collectionApi}/api/artist`,
+  CATEGORY: `${environment.collectionApi}/api/category`,
+  CMS: `${environment.cmsApi}/api/cms`,
+  DONATED_FUNDS: `${environment.contributionApi}/api/payment`,
+  DASHBOARD: `${environment.authApi}/dashboard`,
+  EBOOK: `${environment.authApi}/ebook`,
+  EXHIBITION: `${environment.museumEduSagaApi}/api/exhibition`,
+  FORGOT_PASSWORD: `${environment.authApi}/auth/forgot-password`,
+  GALLERY: `${environment.collectionApi}/api/gallery`,
+  HEADING: `${environment.collectionApi}/api/heading`,
+  LOGIN: `${environment.authApi}/auth/login`,
+  METADATA: `${environment.collectionApi}/api/metadata`,
+  NATIONALITIES: `${environment.authApi}/constant`,
+  PERMISSIONS: `${environment.authApi}/permission`,
+  MY_PERMISSIONS: `${environment.authApi}/permission/signed-users`,
+  RESET_PASSWORD: `${environment.authApi}/auth/reset-password`,
+  CHANGE_PASSWORD: `${environment.authApi}/admin/change-password`,
+  ROLES: `${environment.authApi}/roles`,
+  MEMBERS: `${environment.authApi}/user`,
+  PROFILE: `${environment.authApi}/user`,
+  UPDATE_PROFILE: `${environment.authApi}/admin`,
+  ACTIVITY: `${environment.museumEduSagaApi}/api/activity-logger`,
+  UPLOAD_URL: `${environment.collectionApi}/api/artefact/upload-media`,
+  BLOG: `${environment.museumEduSagaApi}/api/blog`,
+  HISTORY_EDUCATION_LIST: `${environment.museumEduSagaApi}/api/history-education`,
+  HISTORY_EDUCATION_SUBCATEGORY: `${environment.museumEduSagaApi}/api/blog/sub-category`,
+  BOOK_LIBRARY: `${environment.museumEduSagaApi}/api/book`,
+  GENERATE_URL: `${environment.collectionApi}/api/generate-url`,
+  CONFIGURATION: `${environment.collectionApi}/api/site-configuration`,
+  USERS: `${environment.museumEduSagaApi}/api/customer`,
+  CONTACT_US: `${environment.museumEduSagaApi}/api/contact-us`,
+  ARTISTIC_CONTRIBUTION: `${environment.contributionApi}/api/contribution`,
+  FEEDBACK: `${environment.museumEduSagaApi}/api/feedback`,
+  EMAIL_SUBSCRIBER: `${environment.museumEduSagaApi}/api/web-email-subscription`,
+  DONATE_CONTRIBUTION: `${environment.contributionApi}/api/contribution/view-donation`
+};
+
+export const CACHE_API = [API.NATIONALITIES, API.PERMISSIONS];

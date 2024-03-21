@@ -1,0 +1,8 @@
+<app-svg-icon name="more_vert" class="open-menu" [matMenuTriggerFor]="actions" />
+<mat-menu class="custom-matMenu" #actions="matMenu">
+  @for (data of actionData; track data) {
+    <button (click)="data.callback(rowReference)" mat-menu-item>
+      <span>{{ data.label | translate }}</span>
+    </button>
+  }
+</mat-menu>

@@ -1,0 +1,54 @@
+<app-vc-search [items]="searchFields" (search)="onSearch($event)" [loader]="isLoading$()" />
+<div class="bg-black-dark shadow-2sm mt-6 p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10">
+  <div class="flex flex-wrap -m-1.5 sm:-m-2 mb-2 sm:mb-3">
+    <div class="p-1.5 sm:p-2 mr-auto order-1 sm:order-none flex-auto sm:flex-none">
+      <app-vc-button *appHasPermission [class]="{ 'common-btn primary-btn font-semibold font-base rounded-5' : true }"
+        (buttonTap)="navigateToAddMember()">{{ 'breadcrumbs.add' | translate }}</app-vc-button>
+    </div>
+    <div class="p-1.5 sm:p-2 order-2 sm:order-none flex-auto sm:flex-none">
+      <ng-select class="w-full min-w-[150px] font-semibold text-secondary custom-select rounded" [formControl]="sortKey"
+        [clearable]="false" [searchable]="false" (change)="getMembers()"
+        placeholder="{{ 'common.sortBy' | translate }}">
+        @for (sort of sortColumns$(); track sort) {
+        <ng-option [value]="sort.key">
+          {{ sort.label | translate }}
+        </ng-option>
+        }
+      </ng-select>
+    </div>
+    <div class="p-1.5 sm:p-2 order-2 sm:order-none flex-auto sm:flex-none">
+      <ng-select class="w-full font-semibold text-secondary custom-select rounded" [formControl]="sortValue"
+        [clearable]="false" [searchable]="false" (change)="getMembers()">
+        @for (sort of sortOptions; track sort) {
+        <ng-option [value]="sort.value">
+          {{ 'common.' + sort.label | translate }}
+        </ng-option>
+        }
+      </ng-select>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <app-vc-table name="pageTitle.members" [columns]="columns$()" [data]="memberList"
+      [dynamicColumnSlots]="{action: actionColumn, createdAt: createdAtColumn, roles: rolesColumn, isActive: statusColumn}"
+      [isLoading]="isLoading$()" [totalData]="totalMembers" (pageChanged)="onPageChanged($event)">
+      <ng-template #actionColumn let-row>
+        <app-vc-action-toolbar [actionData]="row.action" [rowReference]="row"></app-vc-action-toolbar>
+      </ng-template>
+      <ng-template #rolesColumn let-row>
+        @for (role of row.roles; track role; let isLast = $last) {
+        <span>{{ role }}</span>@if (!isLast) {
+        <span>, </span>
+        }
+        }
+      </ng-template>
+      <ng-template #createdAtColumn let-row>
+        {{ row.createdAt | date: 'mediumDate' }}
+      </ng-template>
+      <ng-template #statusColumn let-row>
+        <span [ngClass]="{ 'text-green' : row.isActive, 'text-red' : !row.isActive }">
+          {{ ('options.status.'+ row.isActive) | translate }}
+        </span>
+      </ng-template>
+    </app-vc-table>
+  </div>
+</div>

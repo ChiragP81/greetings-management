@@ -1,0 +1,46 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2022", "dom"],
+    "types": ["node"],
+    "noUnusedLocals": false,
+    "paths": {
+      "@auth/*": ["app/auth/*"],
+      "@pages/*": ["app/pages/*"],
+      "@environment/*": ["environments/*"],
+      "@vc-libs/*": ["app/vc-libs/*"],
+      "@interceptors/*": ["app/core/interceptors/*"],
+      "@constants/*": ["app/core/constants/*"],
+      "@directives/*": ["app/core/directives/*"],
+      "@guards/*": ["app/core/guards/*"],
+      "@models/*": ["app/core/models/*"],
+      "@services/*": ["app/core/services/*"],
+      "@layouts/*": ["app/core/layouts/*"],
+      "@mocks/*": ["app/mocks/*"],
+      "@routes/*": ["app/core/routes/*"],
+      "@pipes/*": ["app/core/pipes/*"],
+      "@decorators/*": ["app/core/decorators/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "preserveWhitespaces": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

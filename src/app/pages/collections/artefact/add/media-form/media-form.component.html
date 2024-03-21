@@ -1,0 +1,94 @@
+<div class="bg-black-dark shadow-2sm p-2 md:p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <div class="flex flex-wrap mb-4">
+    <div class="w-full p-2">
+      <div class="flex items-center rounded-md px-4 border border-grey-50 h-10">
+        <mat-slide-toggle class="custom-slide-toggle" id="allow_download"
+          (change)="updateStatus(field.IS_DOWNLOAD, allowDownload)" [(ngModel)]="allowDownload" />
+        <label class="text-grey-light font-semibold min-w-[100px] ml-4" for="allow_download">
+          {{ 'artefact.allowDownload' | translate }}</label>
+      </div>
+    </div>
+    <div class="w-full p-2">
+      <div class="w-full flex flex-wrap p-2 sm:pr-16 border rounded-5 relative">
+        <div class="w-full md:w-5/12 p-2">
+          <div class="flex">
+            <label class="field-lbl w-28 sm:w-32 md:w-36 min-w-[112px] sm:min-w-[128px] md:min-w-[144px]"
+              for="mediaType">
+              {{ 'artefact.mediaType' | translate }}
+            </label>
+            <ng-select class="w-full font-semibold text-secondary custom-select" id="mediaType" appendTo="body"
+              [items]="availableMediaTypes" bindLabel="label" bindValue="value" [clearable]="false" [searchable]="false"
+              [(ngModel)]="type" (change)="onTypeChange($event.value)"></ng-select>
+          </div>
+        </div>
+        <div class="w-full md:w-5/12 p-2">
+          <div class="flex">
+            <label class="field-lbl w-28 sm:w-32 md:w-36 min-w-[112px] sm:min-w-[128px] md:min-w-[144px]" for="media"
+              [ngClass]="{ 'field-error': isSubmitted && !fileInput.value }">
+              {{ 'artefact.media' | translate }}
+            </label>
+            <input class="form-field py-1" type="file" (change)="onFileChange($event, type, true)"
+              [accept]="supportedFileTypes" [ngClass]="{ 'field-error': isSubmitted && !fileInput.value }" #fileInput>
+          </div>
+          <i class="text-grey-light text-xs">{{ (type === mediaType.IMAGE ? 'common.fileHint' :
+            'common.fileHintWithoutRatio') | translate: {
+            extension: previewMediaExtension, size: previewMediaSize, ratio: imageRatio } }}</i>
+        </div>
+        @if (type !== mediaType.IMAGE) {
+        <div class="w-full md:w-5/12 p-2">
+          <div class="flex">
+            <label class="field-lbl w-28 sm:w-32 md:w-36 min-w-[112px] sm:min-w-[128px] md:min-w-[144px]" for="media"
+              [ngClass]="{ 'field-error': isSubmitted && !imageInput.value }">
+              {{ 'artefact.image' | translate }}
+            </label>
+            <input class="form-field py-1" type="file" [accept]="imageType" (change)="onFileChange($event)"
+              [ngClass]="{ 'field-error': isSubmitted && !imageInput.value }" #imageInput>
+          </div>
+          <i class="text-grey-light text-xs">{{ 'common.fileHint' | translate: { extension, size, ratio: imageRatio }
+            }}</i>
+        </div>
+        }
+        <div class="flex p-2">
+          <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+            (buttonTap)="save()" [isDisabled]="loader" [spin]="loader"> {{ 'common.submit' | translate }}
+          </app-vc-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <app-vc-table name="pageTitle.gallery" [columns]="columns" [data]="mediaList" [totalData]="totalData"
+      [dynamicColumnSlots]="{action: actionColumn, coverUrl: coverUrlColumn, url: urlColumn, coverImage: coverImageColumn, mediaType: typeColumn}"
+      [cdkDragDisabled]="cdkDragDisabled" [requiredPagination]="false" [isLoading]="mediaListLoader"
+      (dropRecord)="drop($event)">
+      <ng-template #actionColumn let-row>
+        <div class="flex items-center">
+          <span>⋮⋮</span>
+          <app-vc-button [class]="{ 'flex bg-red text-white rounded-5 p-2 ml-2' : true }"
+            (buttonTap)="deleteMedia(row)">
+            <app-svg-icon name="delete" />
+          </app-vc-button>
+        </div>
+      </ng-template>
+      <ng-template #typeColumn let-row>
+        <span>{{ row.mediaType | titlecase }}</span>
+      </ng-template>
+      <ng-template #coverUrlColumn let-row>
+        <div class="w-14 h-14">
+          <img class="w-full aspect-square object-contain h-100"
+            [src]="row.base64 ? row.base64 : row.mediaType === mediaType.IMAGE ? row.url : row.coverUrl"
+            [alt]="row.base64 ? row.base64 : row.mediaType === mediaType.IMAGE ? row.url : row.coverUrl">
+        </div>
+      </ng-template>
+      <ng-template #urlColumn let-row>
+        <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px]' : true }"
+          (buttonTap)="openModal(row.mediaType,row.url)"> {{ 'common.view' | translate }}
+        </app-vc-button>
+      </ng-template>
+      <ng-template #coverImageColumn let-row>
+        <mat-slide-toggle class="custom-slide-toggle" [(ngModel)]="row.isPreview"
+          (change)="updateStatus(field.IS_PREVIEW, row)" />
+      </ng-template>
+    </app-vc-table>
+  </div>
+</div>

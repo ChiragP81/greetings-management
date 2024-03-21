@@ -1,0 +1,54 @@
+.sidebar {
+  @apply z-10;
+  transition: 250ms;
+
+  li {
+    @apply border-b-[1px];
+    &:last-child {
+      @apply border-b-0;
+    }
+    &.active {
+      > .menu-item {
+        @apply text-primary;
+      }
+    }
+    &.open {
+      .sub-menu {
+        @apply h-auto;
+      }
+    }
+  }
+  .menu-item {
+    @apply flex items-center font-semibold text-white px-3;
+    &.active,
+    &:hover {
+      @apply text-primary;
+    }
+  }
+  .close-btn {
+    @apply absolute top-2 right-2 2md:hidden cursor-pointer;
+  }
+}
+.menu-overlay {
+  transition: 250ms;
+  @apply fixed bg-black left-0 right-0 top-0 bottom-0 opacity-0 pointer-events-none z-10;
+}
+.sub-menu {
+  @apply h-0 my-0 ml-3 transition-all overflow-hidden;
+}
+
+@media (max-width: 959px) {
+  .sidebar {
+    @apply fixed -left-60 pt-12;
+    &.open {
+      @apply -left-0;
+    }
+  }
+  .open {
+    ~ {
+      .menu-overlay {
+        @apply left-60 opacity-40 pointer-events-auto;
+      }
+    }
+  }
+}

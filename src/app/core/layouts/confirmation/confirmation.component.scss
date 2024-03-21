@@ -1,0 +1,30 @@
+.dialog {
+  background-color: var(--page-bg);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+
+  h4 {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .btn-box {
+    justify-content: flex-end;
+
+    button {
+      font-size: 14px;
+      font-weight: 500;
+      height: 36px;
+
+      &.confirm-button {
+        background: var(--gradient1);
+        color: var(--btn-color);
+      }
+    }
+  }
+}

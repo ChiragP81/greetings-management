@@ -1,0 +1,37 @@
+<div class="bg-black-dark shadow-2sm p-2 md:p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <div class="flex flex-wrap mb-4">
+    <div class="flex flex-col w-full rounded-md border p-4">
+      <label class="text-black-light pb-4 leading-5 font-semibold relative" for="document">
+        {{ 'artefact.document' | translate }}
+      </label>
+      <label
+        class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-24">
+        <app-svg-icon name="upload" class="text-grey-light" />
+        <span class="ml-3 text-grey-light">{{ 'common.uploadFile' | translate: { type } }}</span>
+        <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" [accept]="documentType"
+          (change)="onFileChange($event)">
+      </label>
+      <i class="text-grey-light text-xs">{{ 'common.fileHintWithoutRatio' | translate: { extension, size } }}</i>
+    </div>
+    @for (doc of documentList; track doc; let i = $index) {
+    @if (doc) {
+    <div class="flex items-center justify-between mt-1 w-full p-3 bg-black-dark shadow-md rounded-lg">
+      <div class="flex items-center">
+        <div class="bg-primary rounded-full p-2">
+          <app-svg-icon name="document_upload" class="text-white" />
+        </div>
+        <p class="ml-4 cursor-pointer text-primary" (click)="previewDocument(doc)" (keypress)="previewDocument(doc)"
+          role="none">
+          {{ doc.url | extractFileName }}
+        </p>
+      </div>
+      <div>
+        <app-vc-button [class]="{ 'bg-red text-white rounded-md p-2' : true }" (buttonTap)="deleteDocument(doc)">
+          <app-svg-icon name="delete" />
+        </app-vc-button>
+      </div>
+    </div>
+    }
+    }
+  </div>
+</div>

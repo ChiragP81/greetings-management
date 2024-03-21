@@ -1,0 +1,12 @@
+<div class="bg-primary absolute top-0 left-0 h-1 rounded-2xl" [@progressState]="showLoader ? 'show': 'hide'"></div>
+@if (showLoader) {
+<div class="fixed h-full w-full bg-white/50 z-20">
+  <div class="w-16 h-16 border-t-4 border-primary border-solid rounded-full animate-spin absolute top-1/2 left-1/2">
+  </div>
+</div>
+}
+<router-outlet></router-outlet>
+@if (uploadedMediaList.length) {
+<app-vc-media-progress />
+}
+<app-vc-media-upload />

@@ -1,0 +1,32 @@
+.listing {
+  @apply [&.grid-view]:grid-cols-1 [&.grid-view]:sm:grid-cols-2 [&.grid-view]:lg:grid-cols-3 [&.grid-view]:2xl:grid-cols-4
+  [&.image-view]:grid-cols-1 [&.image-view]:sm:grid-cols-2 [&.image-view]:lg:grid-cols-3 [&.image-view]:2xl:grid-cols-4
+  gap-4 xl:gap-5 2xl:gap-6 mt-4 xl:mt-5 2xl:mt-6;
+}
+
+.list-box {
+  @apply flex items-start rounded-lg border border-slate-200 p-3 xl:p-4 group-[.grid-view]:flex-col flex-wrap sm:flex-nowrap group-[.image-view]:flex-col;
+
+  .img-box {
+    @apply rounded-lg overflow-hidden group-[.grid-view]:w-full group-[.detail-view]:w-full group-[.detail-view]:sm:w-48 group-[.detail-view]:sm:min-w-[192px] group-[.detail-view]:md:w-56 group-[.detail-view]:md:min-w-[224px] group-[.image-view]:w-full;
+  }
+  .desc-box {
+    @apply relative w-full group-[.grid-view]:mt-3 group-[.detail-view]:sm:pl-4 mt-3 sm:mt-0 group-[.image-view]:mt-3 group-[.image-view]:w-full;
+
+    .title-txt {
+      @apply block text-lg 2xl:text-xl group-[.grid-view]:pr-4 group-[.detail-view]:pr-4;
+    }
+
+    .desc-txt {
+      @apply mt-3 md:mt-4 group-[.image-view]:hidden;
+    }
+
+    .action-box {
+      @apply absolute group-[.grid-view]:-right-2 group-[.grid-view]:top-0 group-[.detail-view]:-right-2 group-[.detail-view]:-top-1 group-[.image-view]:-right-2 group-[.image-view]:top-0;
+    }
+  }
+}
+
+.generic-table-pagination {
+  @apply mt-4 xl:mt-5 2xl:mt-6;
+}

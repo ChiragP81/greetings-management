@@ -1,0 +1,37 @@
+<div class="bg-black-dark shadow-2sm p-2 md:p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <div class="flex flex-wrap mb-4">
+    <div class="flex flex-col w-full rounded-md border p-4">
+      <label class="text-black-light pb-4 leading-5 font-semibold relative" for="photo">
+        {{ 'artefact.photo' | translate }}
+      </label>
+      <label
+        class="relative w-full flex items-center justify-center bg-gray-100 py-6 px-4 rounded-lg cursor-pointer h-24">
+        <app-svg-icon name="upload" class="text-grey-light" />
+        <span class="ml-3 text-grey-light">{{ 'common.uploadFile' | translate: { type } }}</span>
+        <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" [accept]="imageType"
+          (change)="onFileChange($event)">
+      </label>
+      <i class="text-grey-light text-xs">{{ 'common.fileHint' | translate: { extension, size, ratio } }}</i>
+    </div>
+    @for (image of imageList; track image; let i = $index) {
+    @if (image) {
+    <div class="flex items-center justify-between mt-1 w-full p-3 bg-black-dark shadow-md rounded-lg">
+      <div class="flex items-center">
+        <div class="bg-primary rounded-full p-2">
+          <app-svg-icon name="image_upload" class="text-white" />
+        </div>
+        <p class="ml-4 cursor-pointer text-primary" (click)="previewImage(image)" (keypress)="previewImage(image)"
+          role="none">
+          {{ image.url | extractFileName }}
+        </p>
+      </div>
+      <div>
+        <app-vc-button [class]="{ 'bg-red text-white rounded-md p-2' : true }" (buttonTap)="deleteImage(image)">
+          <app-svg-icon name="delete" />
+        </app-vc-button>
+      </div>
+    </div>
+    }
+    }
+  </div>
+</div>

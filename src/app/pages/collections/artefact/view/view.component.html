@@ -1,0 +1,285 @@
+<div class="bg-black-dark shadow-2sm p-4 lg:p-6 xl:p-8 2xl:p-10 rounded-10 w-full">
+  <div class="flex-wrap mb-4">
+    <div class="w-full flex justify-center sm:justify-end mb-6 2xl:mb-8 flex-wrap">
+      <app-vc-button *appHasPermission="permissions.UPDATE_ARTEFACT" [class]="{
+          'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4 mb-4 sm:mb-0': true
+        }" (buttonTap)="editArtefact()">{{ "common.edit" | translate }}</app-vc-button>
+      <ng-select *appHasPermission="permissions.APPROVE_ARTEFACT"
+        class="font-semibold text-secondary custom-select rounded mr-4 mb-4 sm:mb-0" id="artist" [items]="statusOptions"
+        bindLabel="label" bindValue="value" [clearable]="false" [placeholder]="'common.select' | translate"
+        [(ngModel)]="artefactDetail.data.status" (change)="updateStatus($event.value)">
+      </ng-select>
+      <div class="flex items-center rounded-md px-4 border bg-black border-[#3d3d3d] h-10">
+        <label class="text-white font-semibold min-w-[90px]" for="isActive">
+          {{ "common.status" | translate }}
+        </label>
+        <mat-slide-toggle class="custom-slide-toggle" [(ngModel)]="artefactDetail.data.isActive" id="isActive"
+          (change)="updateActiveStatus()" />
+      </div>
+    </div>
+    <div class="mb-4 pl-1">
+      <i class="text-primary text-xs font-bold">*{{ 'artefact.hint' | translate }}</i>
+    </div>
+    <div class="w-full flex flex-wrap mb-4">
+      <div class="order-2 md:order-1 md:w-8/12 pl-2">
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "common.name" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ artefactDetail.data.title }}</p>
+        </div>
+        <div class="flex mb-4 gap-y-2 items-center flex-wrap">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.accessionNo" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          @if (isUpdate) {
+          <div class="w-36 mb-4 sm:mb-0">
+            <app-vc-input [customClass]="{ 'form-field h-full rounded-none': true }" name="accessionNo"
+              [(ngModel)]="artefactDetail.data.accessionNo" />
+          </div>
+          } @else {
+          <p>{{ artefactDetail.data.accessionNo }}</p>
+          }
+          <div class="ml-4 flex mt-4 sm:mt-0">
+            <ng-container *appHasPermission="permissions.UPDATE_ACCESSION_NUMBER">
+              @if (isUpdate) {
+              <app-vc-button [class]="{ 'common-btn primary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+                (buttonTap)="updateAccessionNumber()" [isDisabled]="isLoading" [spin]="isLoading">
+                {{ 'common.update' | translate }}</app-vc-button>
+              <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+                (buttonTap)="onCancel()" [isDisabled]="isLoading">
+                {{ 'common.cancel' | translate }}</app-vc-button>
+              } @else {
+              <app-vc-button [class]="{ 'common-btn secondary-btn font-semibold rounded-5 min-w-[100px] mr-4' : true }"
+                (buttonTap)="isUpdate = true">{{ 'common.edit' | translate }}</app-vc-button>
+              }
+            </ng-container>
+          </div>
+        </div>
+        @if (artefactDetail.data.originYear) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.originYear" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('originYear')}">{{
+            artefactDetail.data.originYear }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.placeOfOrigin) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.placeOfOrigin" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('placeOfOrigin')}">{{
+            artefactDetail.data.placeOfOrigin
+            }}
+          </p>
+        </div>
+        }
+        @if (artefactDetail.data.medium) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.medium" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('medium')}">{{ artefactDetail.data.medium
+            }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.categoryName) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.category" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ artefactDetail.data.categoryName }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.dimensions) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.dimensions" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('dimensions')}">{{
+            artefactDetail.data.dimensions }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.artistName) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.artist" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('artistId')}">{{
+            artefactDetail.data.artistName }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.credit) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.credit" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('credit')}">
+            {{ artefactDetail.data.credit }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.description) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.desc" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('description')}">{{
+            artefactDetail.data.description }}
+          </p>
+        </div>
+        }@if (artefactDetail.data.headingName?.length) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.collectionHeadings" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p [ngClass]="{'text-orange-400': !isPredefinedFieldVisibleOnWebsite('headingId')}">{{
+            artefactDetail.data.headingName }}</p>
+        </div>
+        }
+        @if (artefactDetail.data.keyword?.length) {
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.keyword" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <p>{{ artefactDetail.data.keyword }}</p>
+        </div>
+        }
+        <div class="flex mb-4">
+          <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+            {{ "artefact.historyrejection" | translate }}
+          </span>
+          <span class="mr-4">:</span>
+          <a class="cursor-pointer text-primary" (click)="openRejectedReasons()" (keypress)="openRejectedReasons()"
+            tabindex="0">
+            {{ "artefact.rejectedReasons" | translate }}</a>
+        </div>
+      </div>
+      <div class="order-2 md:order-1 md:w-4/12">
+        <div class="flex justify-end">
+          <img class="w-full h-full" [src]="artefactDetail.data.url" [alt]="artefactDetail.data.title" />
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (artefactDetail.data.auctionHistory?.length) {
+  <div class="mb-4 w-full">
+    <p class="font-semibold">{{ "auction.history" | translate }} :</p>
+    <div class="mt-2 overflow-x-auto overflow-y-hidden">
+      <table class="w-full border" [attr.aria-describedby]="'auction.history' | translate">
+        <tr class="text-left">
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.house" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.location" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "common.notes" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.dateOfPurchase" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.currency" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.purchasePrice" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.tax" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.transportCost" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "auction.totalCost" | translate }}
+          </th>
+        </tr>
+        @for (auction of artefactDetail.data.auctionHistory; track i; let i = $index) {
+        <tr>
+          <td class="border p-2"> {{ auction.auctionHouse || '-'}} </td>
+          <td class="border p-2"> {{ auction.location || '-'}} </td>
+          <td class="border p-2"> {{ auction.notes || '-'}} </td>
+          <td class="border p-2"> {{( auction.dateOfPurchase | date: 'mediumDate') || '-' }} </td>
+          <td class="border p-2"> {{ auction.currency }} </td>
+          <td class="border p-2"> {{ auction.purchasePrice ?? '-'}} </td>
+          <td class="border p-2"> {{ auction.tax ?? '-'}} </td>
+          <td class="border p-2"> {{ auction.transportCost ?? '-'}} </td>
+          <td class="border p-2"> {{ auction.totalCost ?? '-'}} </td>
+        </tr>
+        }
+      </table>
+    </div>
+  </div>
+  }
+  @if (artefactDetail.data.insuranceHistory?.length) {
+  <div class="mb-4 w-full">
+    <p class="font-semibold">{{ "insurance.history" | translate }} :</p>
+    <div class="mt-2 overflow-x-auto overflow-y-hidden">
+      <table class="w-full border" [attr.aria-describedby]="'insurance.history' | translate">
+        <tr class="text-left">
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.insurance" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.value" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.currency" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.date" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "insurance.valuedBy" | translate }}
+          </th>
+          <th class="min-w-[140px] border p-2">
+            {{ "common.notes" | translate }}
+          </th>
+        </tr>
+        @for (auction of artefactDetail.data.insuranceHistory; track i; let i = $index) {
+        <tr>
+          <td class="border p-2"> {{ auction.insurance || '-' }} </td>
+          <td class="border p-2"> {{ auction.value ?? '-' }} </td>
+          <td class="border p-2"> {{ auction.currency || '-' }} </td>
+          <td class="border p-2"> {{ (auction.date | date: 'mediumDate') || '-' }} </td>
+          <td class="border p-2"> {{ auction.valuedBy ?? '-' }} </td>
+          <td class="border p-2"> {{ auction.notes || '-' }} </td>
+        </tr>
+        }
+      </table>
+    </div>
+  </div>
+  }
+  @if (hasMetadata) {
+  <div class="mb-4">
+    <p class="font-semibold">{{ "artefact.metadata" | translate }} :</p>
+    <span class="w-full border-t border-black block my-1"></span>
+    @for (metaData of artefactDetail.data.metaData; track i; let i = $index) {
+    @if (metaData.value) {
+    <div class="flex mb-4">
+      <span class="min-w-[144px] w-36 md:w-32 md:min-w-[128px] font-semibold">
+        {{ metaData.displayLabel }}
+      </span>
+      <span class="mr-4">:</span>
+      <p [ngClass]="{'text-orange-400': !isMetaDataFieldVisibleOnWebsite(metaData._id)}">{{ metaData.value }}</p>
+    </div>
+    }
+    }
+  </div>
+  }
+</div>

@@ -1,0 +1,7 @@
+<button [type]="type" [disabled]="isDisabled" [ngClass]="class" (click)="click($event)">
+  @if (!spin) {
+  <ng-content></ng-content>
+  } @else {
+  <app-vc-loader [class]="{ 'w-6 h-6 border-x-secondary border-y-transparent' : true }"></app-vc-loader>
+  }
+</button>

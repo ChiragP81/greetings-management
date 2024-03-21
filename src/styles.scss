@@ -1,0 +1,538 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+html,
+body {
+  @apply h-full;
+}
+
+body {
+  @apply bg-[black] bg-[url('assets/images/bg.svg')] m-0 font-base text-white leading-normal text-sm 2xl:text-base;
+}
+
+body * {
+  @apply tracking-[.02em];
+}
+
+input {
+  @apply placeholder:text-neutral-500;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-selected-focus-icon-color: #3367b1;
+  --mdc-radio-selected-hover-icon-color: #3367b1;
+  --mdc-radio-selected-icon-color: #3367b1;
+  --mdc-radio-selected-pressed-icon-color: #3367b1;
+  --mat-radio-checked-ripple-color: #3367b1;
+}
+
+.mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #ffffff;
+  --mdc-switch-selected-handle-color: #ffffff;
+  --mdc-switch-selected-hover-state-layer-color: #ffffff;
+  --mdc-switch-selected-pressed-state-layer-color: #ffffff;
+  --mdc-switch-selected-focus-handle-color: #ffffff;
+  --mdc-switch-selected-hover-handle-color: #ffffff;
+  --mdc-switch-selected-pressed-handle-color: #ffffff;
+  --mdc-switch-selected-focus-track-color: #3367b1;
+  --mdc-switch-selected-hover-track-color: #3367b1;
+  --mdc-switch-selected-pressed-track-color: #3367b1;
+  --mdc-switch-selected-track-color: #3367b1;
+  --mdc-switch-unselected-handle-color: #ffffff;
+  --mdc-switch-unselected-hover-handle-color: #ffffff;
+  --mdc-switch-unselected-focus-handle-color: #ffffff;
+  --mdc-switch-unselected-pressed-handle-color: #ffffff;
+}
+
+.mat-mdc-tab-group.mat-background-primary,
+.mat-mdc-tab-nav-bar.mat-background-primary {
+  --mat-tab-header-with-background-background-color: #e4ebf5;
+  --mat-tab-header-with-background-foreground-color: #3367b1;
+}
+.mat-mdc-tab-header {
+  --mat-tab-header-label-text-weight: 600;
+  @apply rounded-5;
+}
+
+mat-tab-header.mat-mdc-tab-header {
+  @apply sticky top-0 z-10;
+}
+
+.sidebar {
+  .active {
+    > .menu-item {
+      svg {
+        path {
+          @apply fill-primary;
+        }
+      }
+      &:hover {
+        svg {
+          path {
+            @apply fill-white;
+          }
+        }
+      }
+    }
+  }
+  .menu-item {
+    svg {
+      path {
+        @apply text-black-light;
+      }
+    }
+
+    &.active,
+    &:hover {
+      svg {
+        path {
+          @apply fill-primary;
+        }
+      }
+    }
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  -webkit-overflow-scrolling: auto;
+  @apply w-0.5 h-0.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-md shadow-inner;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary rounded-md;
+}
+
+.common-btn {
+  @apply px-4 h-10 rounded-5;
+
+  &.primary-btn {
+    @apply bg-primary text-white;
+  }
+
+  &.secondary-btn {
+    @apply bg-primary-light text-primary;
+  }
+
+  &:disabled {
+    @apply bg-grey-50 text-grey-light cursor-not-allowed;
+  }
+}
+
+.custom-slide-toggle {
+  &.mat-mdc-slide-toggle {
+    .mdc-switch {
+      .mdc-switch__handle-track {
+        @apply w-3.5;
+      }
+
+      .mdc-switch__track {
+        @apply rounded-3xl h-5;
+      }
+
+      .mdc-switch__handle {
+        @apply left-1 h-3.5 w-3.5;
+
+        .mdc-switch__ripple {
+          @apply hidden;
+        }
+      }
+
+      &:disabled {
+        .mdc-switch__track {
+          @apply opacity-100;
+
+          &::before {
+            @apply bg-grey-50;
+          }
+        }
+      }
+    }
+
+    .mdc-switch__icon--on,
+    .mdc-switch__icon--off {
+      @apply hidden;
+    }
+  }
+}
+
+.custom-select {
+  &.ng-select,
+  &.ng-select-focused:not(.ng-select-opened) {
+    .ng-select-container {
+      @apply border-[#3d3d3d] shadow-none rounded-md bg-black text-neutral-300  min-h-[40px] h-full;
+
+      .ng-value-container {
+        @apply pl-4 pr-2;
+
+        .ng-input {
+          @apply pl-4 top-2.5 translate-y-[-1/2];
+        }
+
+        .ng-placeholder {
+          @apply text-neutral-500;
+        }
+      }
+    }
+
+    .ng-dropdown-panel {
+      @apply border-grey-50;
+
+      .ng-dropdown-panel-items {
+        .ng-option {
+          @apply bg-black text-white px-4 py-2;
+
+          &.ng-option-selected {
+            @apply bg-primary-light text-primary;
+          }
+
+          &.ng-option-marked {
+            @apply bg-grey-50 text-black;
+          }
+        }
+      }
+    }
+
+    .ng-arrow-wrapper {
+      @apply pr-3;
+    }
+  }
+
+  &.rounded {
+    .ng-select-container {
+      @apply rounded-md;
+    }
+  }
+
+  &.field-error {
+    .ng-select-container {
+      @apply border-red text-red;
+
+      .ng-arrow-wrapper {
+        .ng-arrow {
+          @apply border-t-red;
+        }
+      }
+    }
+  }
+
+  &.ng-select-disabled {
+    .ng-select-container {
+      @apply bg-white;
+    }
+  }
+}
+
+ng-select.hide-arrow {
+  .ng-arrow-wrapper {
+    @apply hidden;
+  }
+}
+
+.mat-mdc-paginator {
+  &.generic-table-pagination {
+    @apply bg-black-dark text-white font-base border-t border-grey-50 text-sm font-semibold pt-4;
+
+    .mat-mdc-paginator-container {
+      @apply justify-between p-0 min-h-[auto];
+    }
+
+    .mat-mdc-paginator-page-size-label {
+      @apply m-0;
+    }
+
+    .mat-mdc-form-field {
+      .mat-mdc-select-trigger {
+        .mat-mdc-select-value {
+          @apply text-white;
+        }
+        .mat-mdc-select-arrow {
+          @apply text-white;
+        }
+      }
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        @apply border-white;
+      }
+
+      &.mat-focused {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          @apply border-white;
+        }
+
+        .mat-mdc-select-arrow {
+          @apply text-white;
+        }
+      }
+    }
+
+    .mat-mdc-paginator-range-label {
+      @apply m-0 mr-6 ml-3;
+    }
+
+    .mat-mdc-paginator-range-actions {
+      .mat-mdc-icon-button {
+        .mat-mdc-paginator-icon {
+          fill: white;
+        }
+        &[disabled] {
+          .mat-mdc-paginator-icon {
+            fill: gray;
+          }
+        }
+      }
+    }
+
+    .mat-mdc-button-base {
+      @apply p-0 h-8 w-8;
+    }
+  }
+}
+
+.custom-matMenu {
+  .mat-mdc-menu-content {
+    .mat-mdc-menu-item {
+      @apply min-h-[40px];
+
+      .mdc-list-item__primary-text {
+        @apply font-base text-sm 2xl:text-base font-semibold text-grey-500;
+      }
+    }
+  }
+}
+
+.mat-ripple {
+  @apply hidden;
+}
+
+.iti {
+  &.iti--separate-dial-code {
+    @apply w-full font-semibold h-full;
+
+    .iti__country {
+      @apply px-3 py-2;
+    }
+
+    .iti__selected-flag {
+      @apply bg-transparent pl-4 pr-2 border-r border-grey-50;
+    }
+  }
+}
+
+.mdc-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mat-snack-bar-button-color: inherit;
+    .mdc-snackbar__surface {
+      @apply bg-white pr-0 border-l-4;
+
+      .mat-mdc-simple-snack-bar {
+        @apply items-start;
+      }
+
+      .mdc-snackbar__label {
+        @apply text-inherit font-base font-semibold;
+      }
+
+      .mdc-button {
+        @apply min-h-[44px] min-w-[44px];
+      }
+    }
+  }
+
+  &.error-snackbar {
+    .mdc-snackbar__surface {
+      @apply border-red text-red;
+    }
+  }
+
+  &.success-snackbar {
+    .mdc-snackbar__surface {
+      @apply border-green text-green;
+    }
+  }
+
+  &.warning-snackbar {
+    .mdc-snackbar__surface {
+      @apply border-orange-400 text-orange-400;
+    }
+  }
+
+  &.info-snackbar {
+    .mdc-snackbar__surface {
+      @apply border-blue-400 text-blue-400;
+    }
+  }
+}
+
+.field-lbl {
+  @apply flex items-center text-grey-light mb-1 py-1 leading-5 font-semibold;
+  word-break: break-word;
+}
+
+.form-field {
+  @apply w-full px-4 font-semibold bg-black text-white rounded-md border outline-0 min-h-[40px] border-[#3d3d3d];
+
+  &:disabled {
+    @apply bg-white;
+  }
+}
+
+.field-error {
+  @apply border-red text-red;
+}
+
+.custom-input {
+  @apply text-white bg-black  border-[#3d3d3d];
+}
+
+.error-message {
+  @apply text-red mt-1 text-[12px] md:text-sm font-semibold;
+}
+
+.read-only {
+  @apply bg-grey-100 text-grey-light;
+}
+
+@media (max-width: 639px) {
+  .generic-table-pagination {
+    .mat-mdc-paginator-page-size {
+      .mat-mdc-form-field {
+        @apply m-0 w-[60px];
+
+        .mat-mdc-text-field-wrapper {
+          @apply px-2;
+        }
+      }
+    }
+
+    .mat-mdc-paginator-page-size-label {
+      @apply hidden;
+    }
+
+    .mat-mdc-paginator-range-label {
+      @apply mx-3;
+    }
+  }
+}
+
+.field-box {
+  .iti__country-list {
+    .iti__country {
+      &.iti__active {
+        @apply bg-primary-light text-primary font-semibold;
+      }
+
+      &.iti__highlight {
+        @apply bg-grey-50;
+      }
+    }
+  }
+}
+
+.btn-date-select {
+  .mat-mdc-button-base {
+    --mdc-icon-button-state-layer-size: 36px;
+    @apply p-2;
+  }
+}
+
+.NgxEditor__MenuBar {
+  input {
+    outline: auto;
+  }
+}
+
+.form-field-editor {
+  .NgxEditor {
+    @apply border-0 h-80 overflow-y-auto;
+    ol,
+    ul,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      list-style: revert;
+      padding: revert;
+      margin: revert;
+      line-height: normal;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: revert;
+      font-weight: revert;
+    }
+  }
+
+  .NgxEditor__Content {
+    @apply h-full;
+  }
+}
+
+.dynamic-form {
+  .cdk-drag-preview {
+    @apply p-1 box-border rounded shadow;
+  }
+  .cdk-drag-animating {
+    @apply transition;
+  }
+}
+
+mat-dialog-container {
+  &.mat-mdc-dialog-container {
+    .mat-mdc-dialog-surface {
+      @apply max-h-[80vh];
+    }
+  }
+}
+
+.vjs-control {
+  &.vjs-seek-to-live-control {
+    display: none;
+  }
+}
+
+textarea {
+  @apply h-32;
+}
+
+input::-ms-reveal {
+  @apply hidden;
+}
+
+.custom-options-height {
+  .ng-dropdown-panel-items.scroll-host {
+    @apply max-h-[400px];
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: white;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+}
